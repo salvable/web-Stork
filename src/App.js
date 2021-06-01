@@ -1,24 +1,15 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import About from './Stork/test/About';
+import Home from './Stork/test/Home';
+import { Route } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      // exact의 의미는 정확히 이 path에서만 해당 라우팅을 이뤄지도록 하라는 명령
+      <div>
+        <Route path="/" component={Home} exact/>
+        <Route path="/about" component={About} />
+      </div>
   );
 }
 
