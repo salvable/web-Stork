@@ -2,8 +2,9 @@ import React from 'react';
 import './App.css';
 import Navbar from './Stork/component/Navbar';
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
-import Home from "./Stork/Pages/Home";
-import About from "./Stork/Pages/about";
+import Home from "./Stork/Pages/home/home";
+import Stork from "./Stork/Pages/stork/stork";
+import BitCoin from "./Stork/Pages/bitCoin/bitCoin";
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
           <Navbar />
           <Switch>
               <Route path="/" exact component={Home} />
-              <Route path="/about" component={About} />
+              <Route path="/stork" component={Stork} />
+              <Route path="/bitCoin" component={BitCoin} />
           </Switch>
       </Router>
   );

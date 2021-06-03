@@ -11,11 +11,11 @@ const Navbar = () => {
                </NavLink>
                <Bars />
                <NavMenu>
-                   <NavLink to="/about" activeStyle>
-                       About
+                   <NavLink to="/stork" activeStyle>
+                       Stork
                    </NavLink>
-                   <NavLink to="/services" activeStyle>
-                       Services
+                   <NavLink to="/bitCoin" activeStyle>
+                       BitCoin
                    </NavLink>
                    <NavLink to="/contact-us" activeStyle>
                        Contact Us
