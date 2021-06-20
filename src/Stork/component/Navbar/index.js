@@ -27,14 +27,20 @@ const Navbar = () => {
                        Sign Up
                    </NavLink>
                </NavMenu>
-               <TextField variant="outlined"
-                          InputProps={{
-                              endAdornment: (
-                                  <InputAdornment position="end">
-                                      <SearchIcon />
-                                  </InputAdornment>
-                              ),
-                          }}
+               <TextField
+                   variant="outlined"
+                   label="Search"
+                   InputProps={{
+                       endAdornment: (
+                           <InputAdornment position="end">
+                               <SearchIcon />
+                           </InputAdornment>
+                       ),
+                       style:{
+                           backgroundColor: "white",
+                           color: "black"
+                       }
+                   }}
                />
                <NavBtn>
                    <NavBtnLink to='/signin'>Sign In</NavBtnLink>
