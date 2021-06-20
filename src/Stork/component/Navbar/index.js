@@ -1,5 +1,8 @@
 import React from 'react'
 import {Nav,NavLink,Bars,NavMenu,NavBtn,NavBtnLink} from "./NavbarElement";
+import { TextField, InputAdornment } from '@material-ui/core'
+import SearchIcon from "@material-ui/icons/Search";
+
 
 const Navbar = () => {
     return (
@@ -24,12 +27,17 @@ const Navbar = () => {
                        Sign Up
                    </NavLink>
                </NavMenu>
-
-
-
+               <TextField variant="outlined"
+                          InputProps={{
+                              endAdornment: (
+                                  <InputAdornment position="end">
+                                      <SearchIcon />
+                                  </InputAdornment>
+                              ),
+                          }}
+               />
                <NavBtn>
                    <NavBtnLink to='/signin'>Sign In</NavBtnLink>
-                   <span> </span>
                    <NavBtnLink to='/signin'>Sign In</NavBtnLink>
                </NavBtn>
            </Nav>
