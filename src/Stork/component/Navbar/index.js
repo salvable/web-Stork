@@ -10,9 +10,7 @@ const Navbar = () => {
            <Nav>
                <NavLink to="/">
                    <h1>Logo</h1>
-
                </NavLink>
-               <Bars />
                <NavMenu>
                    <NavLink to="/stork" activeStyle>
                        Stork
@@ -38,15 +36,17 @@ const Navbar = () => {
                        ),
                        style:{
                            backgroundColor: "white",
-                           color: "black"
+                           color: "black",
+                           width: "150%"
+
                        }
                    }}
                />
-               <NavBtn>
-                   <NavBtnLink to='/signin'>Sign In</NavBtnLink>
-                   <NavBtnLink to='/signin'>Sign In</NavBtnLink>
-               </NavBtn>
-           </Nav>
+               <NavMenu>
+               <NavBtnLink to='/signUp'>Sign Up</NavBtnLink>
+               <NavBtnLink to='/signin'>Sign In</NavBtnLink>
+               </NavMenu>
+               </Nav>
         </>
     );
 };

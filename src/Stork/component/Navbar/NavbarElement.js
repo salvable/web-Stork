@@ -6,7 +6,8 @@ export const Nav = styled.nav`
   background: #000;
   height: 80px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  align-items: center;
   padding: 0.5rem calc((100vm - 1000px) / 2);
   z-index: 10;
 `;
@@ -54,7 +55,7 @@ export const NavBtn = styled.nav`
   display: flex;
   align-items: center;
   margin-right: 24px;
-  
+  margin-left: 24px;
   @media screen and (max-width: 768px){
     display: none;
   }
