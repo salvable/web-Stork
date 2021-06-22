@@ -44,7 +44,7 @@ const Navbar = () => {
                />
                <NavMenu>
                <NavBtnLink to='/signUp'>Sign Up</NavBtnLink>
-               <NavBtnLink to='/signin'>Sign In</NavBtnLink>
+               <NavBtnLink to='/signIn'>Sign In</NavBtnLink>
                </NavMenu>
                </Nav>
         </>
