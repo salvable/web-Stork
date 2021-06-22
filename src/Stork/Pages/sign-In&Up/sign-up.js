@@ -107,7 +107,15 @@ export default function SignUp() {
                         <Grid item xs={12}>
                             <FormControlLabel
                                 control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                label="I want to receive inspiration, marketing promotions and updates via email."
+                                label="이용약관 동의(필수)"
+                            />
+                            <FormControlLabel
+                                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                                label="개인정보 수집 및 이용 동의(필수)"
+                            />
+                            <FormControlLabel
+                                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                                label="프로모션 정보 수신 동의(선택)"
                             />
                         </Grid>
                     </Grid>
