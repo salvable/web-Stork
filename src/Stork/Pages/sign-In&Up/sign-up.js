@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -48,6 +48,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
     const classes = useStyles();
+    const [id,setId] = useState("")
+    const [password,setPassword] = useState("")
+    const [email,setEmail] = useState("")
+    const [name, setName] = useState("")
+    const [phoneNumber, setPhoneNumber] = useState("")
 
     return (
         <Container component="main" maxWidth="xs">
@@ -69,6 +74,7 @@ export default function SignUp() {
                                 fullWidth
                                 id="ID"
                                 label="ID"
+                                value={id}
                                 autoFocus
                             />
                         </Grid>
@@ -81,6 +87,7 @@ export default function SignUp() {
                                 label="Password"
                                 type="password"
                                 id="password"
+                                value={password}
                                 autoComplete="current-password"
                             />
                         </Grid>
@@ -93,6 +100,7 @@ export default function SignUp() {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                value={email}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -103,6 +111,7 @@ export default function SignUp() {
                                 name="name"
                                 label="name"
                                 id="name"
+                                value={name}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -115,6 +124,7 @@ export default function SignUp() {
                                 type="phoneNumber"
                                 id="phoneNumber"
                                 autoComplete="phoneNumber"
+                                value={phoneNumber}
                             />
                         </Grid>
                         <Grid item xs={12}>
