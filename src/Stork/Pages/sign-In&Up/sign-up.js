@@ -53,6 +53,9 @@ export default function SignUp() {
     const [email,setEmail] = useState("")
     const [name, setName] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
+    const [checkBox_1, setCheckBox_1] = useState(false)
+    const [checkBox_2, setCheckBox_2] = useState(false)
+    const [checkBox_3, setCheckBox_3] = useState(false)
 
     return (
         <Container component="main" maxWidth="xs">
@@ -76,6 +79,10 @@ export default function SignUp() {
                                 label="ID"
                                 value={id}
                                 autoFocus
+                                onChange={(e)=> {
+                                    setId(e.target.value)
+                                }}
+                                //Todo 값에 따라서 올바른 값인지를 출력하는 코드 작성
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -89,6 +96,9 @@ export default function SignUp() {
                                 id="password"
                                 value={password}
                                 autoComplete="current-password"
+                                onChange={(e)=> {
+                                    setPassword(e.target.value)
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -101,6 +111,9 @@ export default function SignUp() {
                                 name="email"
                                 autoComplete="email"
                                 value={email}
+                                onChange={(e)=> {
+                                    setEmail(e.target.value)
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -112,6 +125,9 @@ export default function SignUp() {
                                 label="name"
                                 id="name"
                                 value={name}
+                                onChange={(e)=> {
+                                    setName(e.target.value)
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -125,29 +141,67 @@ export default function SignUp() {
                                 id="phoneNumber"
                                 autoComplete="phoneNumber"
                                 value={phoneNumber}
+                                onChange={(e)=> {
+                                    setPhoneNumber(e.target.value)
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                                control={
+                                    <Checkbox
+                                        checked={checkBox_1}
+                                        color="primary"
+                                        onClick={(e)=>{
+                                            if(checkBox_1 === true){
+                                                setCheckBox_1(false)
+                                            }else{
+                                                setCheckBox_1(true)
+                                            }
+                                        }}
+                                    />}
                                 label="이용약관 동의(필수)"
                             />
                             <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                                control={
+                                    <Checkbox
+                                        checked={checkBox_2}
+                                        color="primary"
+                                        onClick={(e)=>{
+                                            if(checkBox_2 === true){
+                                                setCheckBox_2(false)
+                                            }else{
+                                                setCheckBox_2(true)
+                                            }
+                                        }}
+                                    />}
                                 label="개인정보 수집 및 이용 동의(필수)"
                             />
                             <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                                control={
+                                    <Checkbox
+                                        checked={checkBox_3}
+                                        color="primary"
+                                        onClick={(e)=>{
+                                            if(checkBox_3 === true){
+                                                setCheckBox_3(false)
+                                            }else{
+                                                setCheckBox_3(true)
+                                            }
+                                        }}
+                                    />}
                                 label="프로모션 정보 수신 동의(선택)"
                             />
                         </Grid>
                     </Grid>
                     <Button
-                        type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        onClick={(e)=>{
+                            //Todo 필수 checkbox 확인 후 axos를 이용하여 서버통신하는 코드 작성
+                        }}
                     >
                         Sign Up
                     </Button>
