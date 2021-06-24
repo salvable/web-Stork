@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import axios from "axios";
 
 function Copyright() {
     return (
@@ -57,6 +58,42 @@ export default function SignUp() {
     const [checkBox_2, setCheckBox_2] = useState(false)
     const [checkBox_3, setCheckBox_3] = useState(false)
 
+    const checkId = () =>{
+        const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/
+        const specialCharacters = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi
+
+        if(id.length >=5 && id.length <= 20 && !(korean.test(id)) && id.search(/\s/) === -1 && !(specialCharacters.test(id))){
+            return false
+        }else{
+            return true
+        }
+    }
+
+    const checkPw = () =>{
+        if(password.length >= 8 && password.length <= 20){
+            return false
+        }else{
+            return true
+        }
+    }
+
+    const addUser = async() =>{
+        const response = await axios.post("http://localhost:3000/adduser",{
+            userId: id,
+            password: password,
+            email: email,
+            name: name,
+            phoneNumber: phoneNumber
+        })
+
+        if(response.status === 200){
+            alert("회원추가에 성공")
+        }else{
+            console.log(response.status)
+            alert("실패")
+        }
+    }
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -71,6 +108,8 @@ export default function SignUp() {
                         <Grid item xs={12}>
                             <TextField
                                 autoComplete="fname"
+                                error = {checkId()}
+                                helperText="5~20자의 영어,숫자만 사용 가능합니다."
                                 name="ID"
                                 variant="outlined"
                                 required
@@ -82,13 +121,14 @@ export default function SignUp() {
                                 onChange={(e)=> {
                                     setId(e.target.value)
                                 }}
-                                //Todo 값에 따라서 올바른 값인지를 출력하는 코드 작성
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
                                 required
+                                error = {checkPw()}
+                                helperText="8~20자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
                                 fullWidth
                                 name="password"
                                 label="Password"
@@ -200,7 +240,7 @@ export default function SignUp() {
                         color="primary"
                         className={classes.submit}
                         onClick={(e)=>{
-                            //Todo 필수 checkbox 확인 후 axos를 이용하여 서버통신하는 코드 작성
+                            addUser()
                         }}
                     >
                         Sign Up
