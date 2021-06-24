@@ -37,7 +37,7 @@ const Navbar = () => {
                        style:{
                            backgroundColor: "white",
                            color: "black",
-                           width: "150%"
+                           width: "100%"
 
                        }
                    }}
