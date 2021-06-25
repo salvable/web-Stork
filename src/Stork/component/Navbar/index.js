@@ -1,5 +1,5 @@
 import React from 'react'
-import {Nav,NavLink,Bars,NavMenu,NavBtn,NavBtnLink} from "./NavbarElement";
+import {Nav,NavLink,NavMenu,NavBtnLink} from "./NavbarElement";
 import { TextField, InputAdornment } from '@material-ui/core'
 import SearchIcon from "@material-ui/icons/Search";
 
