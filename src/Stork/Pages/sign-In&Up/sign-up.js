@@ -87,10 +87,9 @@ export default function SignUp() {
         })
 
         if(response.status === 200){
-            alert("회원추가에 성공")
+            alert("회원가입이 완료되었습니다.")
         }else{
-            console.log(response.status)
-            alert("실패")
+            alert("입력 양식을 확인해주세요.")
         }
     }
 
