@@ -241,8 +241,12 @@ export default function SignUp() {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        onClick={(e)=>{
-                            addUser()
+                        onClick={async()=>{
+                            if(checkBox_1 === true && checkBox_2 === true){
+                                await addUser()
+                            }else{
+                                alert("필수 약관에 동의하세요.")
+                            }
                         }}
                     >
                         Sign Up
