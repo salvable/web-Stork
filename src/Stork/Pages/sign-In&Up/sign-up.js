@@ -78,17 +78,20 @@ export default function SignUp() {
     }
 
     const addUser = async() =>{
-        const response = await axios.post("http://localhost:3000/adduser",{
-            userId: id,
-            password: password,
-            email: email,
-            name: name,
-            phoneNumber: phoneNumber
-        })
+        try {
+            const response = await axios.post("http://localhost:3000/adduser", {
+                userId: id,
+                password: password,
+                email: email,
+                name: name,
+                phoneNumber: phoneNumber
+            })
 
-        if(response.status === 200){
             alert("회원가입이 완료되었습니다.")
-        }else{
+
+        }
+        catch (e){
+            console.log(e)
             alert("입력 양식을 확인해주세요.")
         }
     }
