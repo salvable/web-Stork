@@ -11,6 +11,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import axios from "axios";
 
 function Copyright() {
     return (
@@ -50,6 +51,18 @@ export default function SignIn() {
 
     const [id, setId] = useState("")
     const [password, setPassword] = useState("")
+
+    const login = async(id,password) =>{
+        try {
+            const response = await axios.get(`http://localhost:3000/Login/?id=${id}&password=${password}`)
+
+            console.log(response.data.token)
+            console.log(response.data.refreshToken)
+
+        }catch (e){
+            console.log(e)
+        }
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -96,11 +109,13 @@ export default function SignIn() {
                         label="Remember me"
                     />
                     <Button
-                        type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        onClick={async()=>{
+                            await login(id,password)
+                        }}
                     >
                         Sign In
                     </Button>
