@@ -56,8 +56,8 @@ export default function SignIn() {
         try {
             const response = await axios.get(`http://localhost:3000/Login/?id=${id}&password=${password}`)
 
-            console.log(response.data.token)
-            console.log(response.data.refreshToken)
+            window.localStorage.setItem("accessToken", response.data.token)
+            window.localStorage.setItem("refreshToken", response.data.refreshToken)
 
         }catch (e){
             console.log(e)

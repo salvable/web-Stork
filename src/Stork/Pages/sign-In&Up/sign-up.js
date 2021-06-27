@@ -87,11 +87,12 @@ export default function SignUp() {
             })
 
             alert("회원가입이 완료되었습니다.")
-
+            return true
         }
         catch (e){
             console.log(e)
             alert("입력 양식을 확인해주세요.")
+            return false
         }
     }
 
@@ -242,7 +243,10 @@ export default function SignUp() {
                         className={classes.submit}
                         onClick={async()=>{
                             if(checkBox_1 === true && checkBox_2 === true){
-                                await addUser()
+                                const result = await addUser()
+                                if(result == true){
+                                    window.location.replace("/signIn")
+                                }
                             }else{
                                 alert("필수 약관에 동의하세요.")
                             }
