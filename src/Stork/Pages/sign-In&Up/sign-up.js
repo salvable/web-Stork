@@ -184,12 +184,26 @@ export default function SignUp() {
                                 fullWidth
                                 name="phoneNumber"
                                 label="phoneNumber"
-                                type="phoneNumber"
+                                type="text"
                                 id="phoneNumber"
                                 autoComplete="phoneNumber"
                                 value={phoneNumber}
                                 onChange={(e)=> {
-                                    setPhoneNumber(e.target.value)
+                                    const regex = /^[0-9\b -]{0,13}$/;
+                                    if (regex.test(e.target.value)) {
+                                        if(e.target.value.length == 3 || e.target.value.length === 8){
+                                            setPhoneNumber(e.target.value + "-");
+                                        }else{
+                                            setPhoneNumber(e.target.value);
+                                        }
+                                    }
+                                }}
+                                onKeyDown={(e)=>{
+                                    if(!(e.keyCode >= 48 && e.keyCode <= 57) && e.keyCode === 8){
+                                        if((e.target.value.length === 9 || e.target.value.length === 4) && phoneNumber.slice(e.target.value.length-1,e.target.value.length) == "-"){
+                                           setPhoneNumber(phoneNumber.slice(0,e.target.value.length-1))
+                                        }
+                                    }
                                 }}
                             />
                         </Grid>
