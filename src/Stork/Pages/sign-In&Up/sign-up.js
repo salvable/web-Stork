@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -74,6 +74,11 @@ export default function SignUp() {
         }else{
             return true
         }
+    }
+
+    const checkEmail = () =>{
+        const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+        return regExp.test(email); // 형식에 맞는 경우 true 리턴
     }
 
     const addUser = async() =>{
@@ -242,9 +247,26 @@ export default function SignUp() {
                         color="primary"
                         className={classes.submit}
                         onClick={async()=>{
+                            if(checkId()){
+                                alert("ID 양식을 확인해주세요.")
+                                return;
+                            }
+                            if(checkPw()){
+                                alert("Password 양식을 확인해주세요.")
+                                return;
+                            }
+                            if(!checkEmail()){
+                                alert("email 양식을 확인해주세요.")
+                                return;
+                            }
+                            if(name.length > 30){
+                                alert("이름 양식을 확인해주세요")
+                                return;
+                            }
+
                             if(checkBox_1 === true && checkBox_2 === true){
                                 const result = await addUser()
-                                if(result == true){
+                                if(result === true){
                                     window.location.replace("/signIn")
                                 }
                             }else{
