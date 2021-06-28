@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from "axios";
+import {useHistory} from "react-router";
 
 function Copyright() {
     return (
@@ -48,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
     const classes = useStyles();
+    const history = useHistory()
 
     const [id, setId] = useState("")
     const [password, setPassword] = useState("")
@@ -58,9 +60,11 @@ export default function SignIn() {
 
             window.localStorage.setItem("accessToken", response.data.token)
             window.localStorage.setItem("refreshToken", response.data.refreshToken)
+            history.replace('/')
 
         }catch (e){
             console.log(e)
+            alert("입력 정보를 확인해주세요.")
         }
     }
 
