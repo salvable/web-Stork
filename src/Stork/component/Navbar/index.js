@@ -1,10 +1,28 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {Nav,NavLink,NavMenu,NavBtnLink} from "./NavbarElement";
 import { TextField, InputAdornment } from '@material-ui/core'
 import SearchIcon from "@material-ui/icons/Search";
+import axios from "axios";
 
 
 const Navbar = () => {
+    const [isLogin,setIsLogin] = useState(false)
+
+    useEffect(()=>{
+        async function checkAuth(token){
+            if(token != null){
+                const response = await axios.get("http://localhost:3000/checkAuth",{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+            }
+        }
+
+        const Token = localStorage.getItem("accessToken")
+        checkAuth(Token)
+    },[])
+
     return (
         <>
            <Nav>
@@ -42,6 +60,7 @@ const Navbar = () => {
                        }
                    }}
                />
+
                <NavMenu>
                <NavBtnLink to='/signUp'>Sign Up</NavBtnLink>
                <NavBtnLink to='/signIn'>Sign In</NavBtnLink>
