@@ -11,6 +11,7 @@ function App() {
   return (
       <Router>
           <Navbar />
+
           <Switch>
               <Route path="/" exact component={Home} />
               <Route path="/stork" component={Stork} />

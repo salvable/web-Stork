@@ -60,7 +60,7 @@ export default function SignIn() {
 
             window.localStorage.setItem("accessToken", response.data.token)
             window.localStorage.setItem("refreshToken", response.data.refreshToken)
-            history.replace('/')
+            history.replace('/?login=true')
 
         }catch (e){
             console.log(e)
