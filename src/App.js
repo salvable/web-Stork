@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Navbar from './Stork/component/Navbar';
+import Sidebar from "./Stork/component/SideBar/sideBar";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Home from "./Stork/Pages/home/home";
 import Stork from "./Stork/Pages/stork/stork";
@@ -11,7 +12,7 @@ function App() {
   return (
       <Router>
           <Navbar />
-
+          {/*<Sidebar />*/}
           <Switch>
               <Route path="/" exact component={Home} />
               <Route path="/stork" component={Stork} />
