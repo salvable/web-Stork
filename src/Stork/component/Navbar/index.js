@@ -10,24 +10,18 @@ const Navbar = () => {
 
     useEffect(()=>{
         async function checkAuth(token){
-                if(token != null) {
-
-                    try{
-                        const response = await axios.get("http://localhost:3000/checkAuth", {
-                            headers: {
-                                Authorization: `Bearer ${token}`
-                        }})
-                        setIsLogin(true)
-                    }catch(e){
-                        console.log("error")
+            if(token != null){
+                const response = await axios.get("http://localhost:3000/checkAuth",{
+                    headers: {
+                        Authorization: `Bearer ${token}`
                     }
-
+                })
             }
         }
 
         const Token = localStorage.getItem("accessToken")
-         checkAuth(Token)
-    },[isLogin])
+        checkAuth(Token)
+    },[])
 
     return (
         <>
