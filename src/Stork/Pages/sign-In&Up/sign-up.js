@@ -90,12 +90,12 @@ export default function SignUp() {
                 name: name,
                 phoneNumber: phoneNumber
             })
+            console.log(response)
 
             alert("회원가입이 완료되었습니다.")
             return true
         }
         catch (e){
-            console.log(e)
             alert("입력 양식을 확인해주세요.")
             return false
         }
