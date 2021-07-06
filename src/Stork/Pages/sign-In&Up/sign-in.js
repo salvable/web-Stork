@@ -56,7 +56,10 @@ export default function SignIn() {
 
     const login = async(id,password) =>{
         try {
-            const response = await axios.get(`http://localhost:3000/Login/?id=${id}&password=${password}`)
+            const response = await axios.post(`http://localhost:3000/Login/`,{
+                userId: id,
+                password: password,
+            })
 
             window.localStorage.setItem("accessToken", response.data.token)
             window.localStorage.setItem("refreshToken", response.data.refreshToken)
