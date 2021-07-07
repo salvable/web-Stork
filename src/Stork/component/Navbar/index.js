@@ -36,11 +36,11 @@ const Navbar = () => {
                    <NavLink to="/bitCoin" activeStyle>
                        BitCoin
                    </NavLink>
-                   <NavLink to="/contact-us" activeStyle>
-                       Contact Us
+                   <NavLink to="/favorite" activeStyle>
+                       Favorite
                    </NavLink>
-                   <NavLink to="/sign-up" activeStyle>
-                       Sign Up
+                   <NavLink to="/contact-us" activeStyle>
+                       Contact-us
                    </NavLink>
                </NavMenu>
                <TextField
@@ -62,8 +62,8 @@ const Navbar = () => {
                />
 
                <NavMenu>
-               <NavBtnLink to='/signUp'>Sign Up</NavBtnLink>
-               <NavBtnLink to='/signIn'>Sign In</NavBtnLink>
+               <NavLink to='/signUp'>Sign Up</NavLink>
+               <NavLink to='/signIn'>Sign In</NavLink>
                </NavMenu>
                </Nav>
         </>
