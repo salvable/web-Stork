@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -20,6 +20,17 @@ const Home = () => {
             minWidth: 650,
         }
     });
+
+    // 각각 상한가, 하한가, 거래상위, 시가총액 상위를 나타냄, 네이밍은 네이버 주식 url로 결정
+    const [siseUpper,setSiseUpper] = useState([])
+    const [siseLower,setSiseLower] = useState([])
+    const [siseQuant,setSiseQuant] = useState([])
+    const [siseMarketSum,setSiseMarketSum] = useState([])
+
+
+    useEffect(() => {
+        console.log(siseUpper,siseLower,siseQuant,siseMarketSum)
+    },[]);
 
     return (
         <div className={styles.root}>
@@ -69,7 +80,7 @@ const Home = () => {
                     </TableContainer>
                 </Grid>
                 <Grid item xs={4}>
-                    <Paper className={styles.paper}>Content 3</Paper>
+                    <Paper className={styles.paper}>채팅방 예정</Paper>
                 </Grid>
                 <Grid item xs={4}>
                     <TableContainer component={Paper}>
