@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import {Table, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import axios from "axios";
 
 const Home = () => {
 
@@ -29,7 +30,13 @@ const Home = () => {
 
 
     useEffect(() => {
-        console.log(siseUpper,siseLower,siseQuant,siseMarketSum)
+        async function getStorkData(){
+            const siseUpperDataArray = []
+            const siseUpperData = await axios.get("http://localhost:8000/crawling/stork/sise/sise_upper")
+            siseUpperDataArray.push(siseUpperData.data.kosdak,siseUpperData.data.kospi)
+            console.log(siseUpperDataArray)
+        }
+        getStorkData()
     },[]);
 
     return (
