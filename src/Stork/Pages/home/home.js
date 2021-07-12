@@ -37,13 +37,26 @@ const Home = () => {
             siseUpperData.data.kospi.map((unit) => {
                 siseUpperDataArray.push(unit)
             })
-
             siseUpperData.data.kosdak.map((unit) => {
                 siseUpperDataArray.push(unit)
             })
 
             setSiseUpper(siseUpperDataArray)
+
+            const siseLowerDataArray = []
+            const siseLowerData = await axios.get("http://localhost:8000/crawling/stork/sise/sise_lower")
+            siseLowerData.data.kospi.map((unit) => {
+                siseLowerDataArray.push(unit)
+            })
+            siseLowerData.data.kosdak.map((unit) => {
+                siseLowerDataArray.push(unit)
+            })
+            setSiseLower(siseLowerDataArray)
+
+            const siseQuantData = await axios.get("http://localhost:8000/crawling/stork/sise/sise_quant")
+            setSiseQuant(siseQuantData.data.kospi)
         }
+
         getStorkData()
     },[]);
 
@@ -88,7 +101,7 @@ const Home = () => {
                             justifyContent:'center',
                             alignItems: 'center',
                         }}>
-                            <h3>거래 상위</h3>
+                            <h3>하한가</h3>
                         </div>
                         <Table className={styles.table} aria-label="simple table" >
                             <TableHead>
@@ -97,9 +110,19 @@ const Home = () => {
                                     <TableCell align="center">현재가</TableCell>
                                     <TableCell align="center">전일비</TableCell>
                                     <TableCell align="center">등락률</TableCell>
-
                                 </TableRow>
                             </TableHead>
+                            <TableBody>
+                                {siseLower.map((row) => (
+                                    <TableRow key={row[0]}>
+                                        <TableCell align="center">{row[0]}</TableCell>
+                                        <TableCell align="center">{row[1]}</TableCell>
+                                        <TableCell align="center">{row[2]}</TableCell>
+                                        <TableCell align="center">{row[3]}</TableCell>
+                                    </TableRow>
+
+                                ))}
+                            </TableBody>
                         </Table>
                     </TableContainer>
                 </Grid>
@@ -113,7 +136,7 @@ const Home = () => {
                             justifyContent:'center',
                             alignItems: 'center',
                         }}>
-                            <h3>하한가 </h3>
+                            <h3>거래량 상위</h3>
                         </div>
                         <Table className={styles.table} aria-label="simple table" >
                             <TableHead>
@@ -122,9 +145,19 @@ const Home = () => {
                                     <TableCell align="center">현재가</TableCell>
                                     <TableCell align="center">전일비</TableCell>
                                     <TableCell align="center">등락률</TableCell>
-
                                 </TableRow>
                             </TableHead>
+                            <TableBody>
+                                {siseQuant.map((row) => (
+                                    <TableRow key={row[0]}>
+                                        <TableCell align="center">{row[0]}</TableCell>
+                                        <TableCell align="center">{row[1]}</TableCell>
+                                        <TableCell align="center">{row[2]}</TableCell>
+                                        <TableCell align="center">{row[3]}</TableCell>
+                                    </TableRow>
+
+                                ))}
+                            </TableBody>
                         </Table>
                     </TableContainer>
                 </Grid>
