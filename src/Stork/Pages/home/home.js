@@ -26,7 +26,7 @@ const Home = () => {
     const [siseUpper,setSiseUpper] = useState([])
     const [siseLower,setSiseLower] = useState([])
     const [siseQuant,setSiseQuant] = useState([])
-    const [siseMarketSum,setSiseMarketSum] = useState([])
+    const [siseMarket,setSiseMarket] = useState([])
 
 
     useEffect(() => {
@@ -55,6 +55,9 @@ const Home = () => {
 
             const siseQuantData = await axios.get("http://localhost:8000/crawling/stork/sise/sise_quant")
             setSiseQuant(siseQuantData.data.kospi)
+
+            const siseMarketData = await axios.get("http://localhost:8000/crawling/stork/sise/sise_market")
+            setSiseMarket(siseMarketData.data.kospi)
         }
 
         getStorkData()
@@ -177,9 +180,19 @@ const Home = () => {
                                     <TableCell align="center">현재가</TableCell>
                                     <TableCell align="center">전일비</TableCell>
                                     <TableCell align="center">등락률</TableCell>
-
                                 </TableRow>
                             </TableHead>
+                            <TableBody>
+                                {siseMarket.map((row) => (
+                                    <TableRow key={row[0]}>
+                                        <TableCell align="center">{row[0]}</TableCell>
+                                        <TableCell align="center">{row[1]}</TableCell>
+                                        <TableCell align="center">{row[2]}</TableCell>
+                                        <TableCell align="center">{row[3]}</TableCell>
+                                    </TableRow>
+
+                                ))}
+                            </TableBody>
                         </Table>
                     </TableContainer>
                 </Grid>
