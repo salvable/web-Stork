@@ -2,7 +2,7 @@ import React, {Component, useEffect, useState} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import {Table, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import axios from "axios";
 
 const Home = () => {
@@ -33,8 +33,16 @@ const Home = () => {
         async function getStorkData(){
             const siseUpperDataArray = []
             const siseUpperData = await axios.get("http://localhost:8000/crawling/stork/sise/sise_upper")
-            siseUpperDataArray.push(siseUpperData.data.kosdak,siseUpperData.data.kospi)
-            console.log(siseUpperDataArray)
+
+            siseUpperData.data.kospi.map((unit) => {
+                siseUpperDataArray.push(unit)
+            })
+
+            siseUpperData.data.kosdak.map((unit) => {
+                siseUpperDataArray.push(unit)
+            })
+
+            setSiseUpper(siseUpperDataArray)
         }
         getStorkData()
     },[]);
@@ -58,9 +66,18 @@ const Home = () => {
                                     <TableCell align="center">현재가</TableCell>
                                     <TableCell align="center">전일비</TableCell>
                                     <TableCell align="center">등락률</TableCell>
-
                                 </TableRow>
                             </TableHead>
+                            <TableBody>
+                                {siseUpper.map((row) => (
+                                    <TableRow key={row[0]}>
+                                        <TableCell align="center">{row[0]}</TableCell>
+                                        <TableCell align="center">{row[1]}</TableCell>
+                                        <TableCell align="center">{row[2]}</TableCell>
+                                        <TableCell align="center">{row[3]}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
                         </Table>
                     </TableContainer>
                 </Grid>
