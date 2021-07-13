@@ -14,14 +14,17 @@ const Navbar = () => {
                 const response = await axios.get("http://localhost:3000/checkAuth",{
                     headers: {
                         Authorization: `Bearer ${token}`
-                    }
-                })
+                    }})
+
+                if(response.status == 200){
+                    setIsLogin(true)
+                }
             }
         }
 
         const Token = localStorage.getItem("accessToken")
         checkAuth(Token)
-    },[])
+    },[isLogin])
 
     return (
         <>
@@ -62,8 +65,9 @@ const Navbar = () => {
                />
 
                <NavMenu>
-               <NavLink to='/signUp'>Sign Up</NavLink>
-               <NavLink to='/signIn'>Sign In</NavLink>
+                   <React.Fragment>
+                       {isLogin ? (<NavLink to='/signUp'>signup</NavLink>) : (<NavLink to='/signIn'>Sign In</NavLink>)}
+                   </React.Fragment>
                </NavMenu>
                </Nav>
         </>
