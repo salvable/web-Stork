@@ -65,8 +65,8 @@ const Home = () => {
 
     return (
         <div className={styles.root}>
-            <Grid container spacing={10}>
-                <Grid item xs={4}>
+            <Grid container spacing={6} style={{height: "100%" }}>
+                <Grid item xs={6}>
                     <TableContainer component={Paper}>
                         <div style = {{
                             display: 'flex',
@@ -97,7 +97,7 @@ const Home = () => {
                         </Table>
                     </TableContainer>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={6}>
                     <TableContainer component={Paper}>
                         <div style = {{
                             display: 'flex',
@@ -129,10 +129,7 @@ const Home = () => {
                         </Table>
                     </TableContainer>
                 </Grid>
-                <Grid item xs={4}>
-                    <Paper className={styles.paper}>채팅방 예정</Paper>
-                </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={6}>
                     <TableContainer component={Paper}>
                         <div style = {{
                             display: 'flex',
@@ -164,7 +161,7 @@ const Home = () => {
                         </Table>
                     </TableContainer>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={6}>
                     <TableContainer component={Paper}>
                         <div style = {{
                             display: 'flex',
