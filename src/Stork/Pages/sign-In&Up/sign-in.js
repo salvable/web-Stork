@@ -49,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
     const classes = useStyles();
-    const history = useHistory()
 
     const [id, setId] = useState("")
     const [password, setPassword] = useState("")
@@ -63,7 +62,7 @@ export default function SignIn() {
 
             window.localStorage.setItem("accessToken", response.data.token)
             window.localStorage.setItem("refreshToken", response.data.refreshToken)
-            history.replace('/?login=true')
+            window.location.replace('/')
 
         }catch (e){
             console.log(e)
