@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react'
-import {Nav,NavLink,NavMenu,NavBtnLink} from "./NavbarElement";
+import {Nav, NavLink, NavMenu, NavBtnLink, NavBtn} from "./NavbarElement";
 import { TextField, InputAdornment } from '@material-ui/core'
 import SearchIcon from "@material-ui/icons/Search";
 import axios from "axios";
+import Button from "@material-ui/core/Button";
 
 
 const Navbar = () => {
     const [isLogin,setIsLogin] = useState(false)
+    const [userId, setUserId] = useState("")
 
     useEffect(()=>{
         async function checkAuth(token){
@@ -18,6 +20,10 @@ const Navbar = () => {
 
                 if(response.status == 200){
                     setIsLogin(true)
+
+                    const user = await axios.get(`http://localhost:3000/getUser/${response.data.userId}`)
+                    setUserId(user.data.user.userId)
+
                 }
             }
         }
@@ -66,7 +72,10 @@ const Navbar = () => {
 
                <NavMenu>
                    <React.Fragment>
-                       {isLogin ? (<NavLink to='/signUp'>signup</NavLink>) : (<NavLink to='/signIn'>Sign In</NavLink>)}
+                       {isLogin ? (<Button variant="contained" color="primary">My Info</Button>) : (<NavLink to='/signIn'>Sign In</NavLink>)}
+                   </React.Fragment>
+                   <React.Fragment>
+                       {isLogin ? (<Button variant="contained" color="primary">LogOut</Button>) : (<NavLink to='/signUp'>Sign Up</NavLink>)}
                    </React.Fragment>
                </NavMenu>
                </Nav>
