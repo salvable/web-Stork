@@ -11,7 +11,7 @@ const Navbar = () => {
     const [userId, setUserId] = useState("")
 
     useEffect(()=>{
-        async function checkAuth(token){
+        async function CheckAuth(token){
             if(token != null){
                 const response = await axios.get("http://localhost:3000/checkAuth",{
                     headers: {
@@ -29,8 +29,15 @@ const Navbar = () => {
         }
 
         const Token = localStorage.getItem("accessToken")
-        checkAuth(Token)
+        CheckAuth(Token)
     },[isLogin])
+
+    const LogOut = () => {
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
+        alert("로그아웃이 완료되었습니다.")
+        window.location.replace('/')
+    }
 
     return (
         <>
@@ -75,7 +82,7 @@ const Navbar = () => {
                        {isLogin ? (<Button variant="contained" color="primary">My Info</Button>) : (<NavLink to='/signIn'>Sign In</NavLink>)}
                    </React.Fragment>
                    <React.Fragment>
-                       {isLogin ? (<Button variant="contained" color="primary">LogOut</Button>) : (<NavLink to='/signUp'>Sign Up</NavLink>)}
+                       {isLogin ? (<Button variant="contained" color="primary" onClick={() => {LogOut()}}>LogOut</Button>) : (<NavLink to='/signUp'>Sign Up</NavLink>)}
                    </React.Fragment>
                </NavMenu>
                </Nav>
