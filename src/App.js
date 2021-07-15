@@ -9,6 +9,7 @@ import signUp from "./Stork/Pages/sign-In&Up/sign-up"
 import signIn from "./Stork/Pages/sign-In&Up/sign-in"
 import favorite from "./Stork/Pages/favorite/favorite"
 import contact from "./Stork/Pages/contact-us/contact-us"
+import profile from "./Stork/Pages/profile/profile"
 function App() {
   return (
       <Router>
@@ -21,6 +22,7 @@ function App() {
               <Route path="/signIn" component={signIn} />
               <Route path="/favorite" component={favorite}/>
               <Route path="/contact-us" component={contact}/>
+              <Route path="/profile/:userId" component={profile}/>
           </Switch>
       </Router>
   );
