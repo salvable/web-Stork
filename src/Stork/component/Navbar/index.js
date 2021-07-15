@@ -29,21 +29,26 @@ const Navbar = () => {
     useEffect(()=>{
         async function CheckAuth(token){
             if(token != null){
-                const response = await axios.get("http://localhost:3000/checkAuth",{
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }})
-                if(response.status == 200){
-                    setIsLogin(true)
-                    const userId = await getUserId(response.data.userId)
-                    setUserId(userId)
-                }else{
-                    console.log("#####")
-                    const refresh = await axios.get("http://localhost:3000/refreshToken")
+                try{
+                    const response = await axios.get("http://localhost:3000/checkAuth",{
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }})
+
+                        setIsLogin(true)
+                        const userId = await getUserId(response.data.userId)
+                        setUserId(userId)
+                }catch(e){
+                    const refreshToken = localStorage.getItem("refreshToken")
+                    const refresh = await axios.get("http://localhost:3000/refreshToken",{
+                        headers: {
+                            Authorization: `Bearer ${refreshToken}`
+                        }})
                     window.localStorage.setItem("accessToken", refresh.data.token)
                     window.localStorage.setItem("refreshToken", refresh.data.refreshToken)
-                    const userId = await getUserId(response.data.userId)
+                    const userId = await getUserId(refresh.data.userId)
                     setUserId(userId)
+                    window.location.reload()
                 }
             }
         }
