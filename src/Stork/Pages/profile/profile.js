@@ -8,6 +8,7 @@ const Profile = () => {
 
     const styles = theme => ({
         root: {
+            marginTop: 5,
             padding: theme.spacing(3),
             background: '#eeeeee'
         },
@@ -21,14 +22,23 @@ const Profile = () => {
 
     return (
         <div className={styles.root}>
-            <h1>My Info</h1>
-            <Grid container spacing={3} style:{margin-top:40px}>
-                <Grid item xs={5}>
-                    <Paper className={styles.paper} elevation={3}>Content 2</Paper>
+            <Grid container spacing={8}>
+                <Grid item xs={6}>
+                    <Paper className={styles.paper} elevation={3}>
+                        <div>내 정보</div>
+                    </Paper>
                 </Grid>
-                <Grid item xs={5}>
-                    <Paper className={styles.paper} elevation={3}>Content 3</Paper>
+                <Grid item xs={6}>
+                    <Paper className={styles.paper} elevation={3}>
+                        <h3>내 계좌</h3>
+                    </Paper>
                 </Grid>
+                <Grid item xs={6}>
+                    <Paper className={styles.paper} elevation={3}>
+                        <h3>내 등급</h3>
+                    </Paper>
+                </Grid>
+
 
             </Grid>
         </div>
