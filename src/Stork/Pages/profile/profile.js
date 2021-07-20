@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from "axios";
+import Home from "../home/home";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -33,12 +34,22 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignUp() {
+const Profile = ({match}) => {
     const classes = useStyles();
+    const userId = match.params.userId
+
     const [id,setId] = useState("")
     const [email,setEmail] = useState("")
     const [name, setName] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
+
+    useEffect(()=>{
+        async function getUserInfo(){
+            const response = await axios.get(`http://localhost:3000/getUser/${userId}`)
+            console.log(response)
+        }
+        getUserInfo()
+    },[])
 
 
     return (
@@ -56,50 +67,46 @@ export default function SignUp() {
                                 autoComplete="fname"
                                 name="ID"
                                 variant="outlined"
-                                required
                                 fullWidth
                                 id="ID"
                                 label="ID"
                                 value={id}
                                 autoFocus
-                                onChange={(e)=> {
-                                    setId(e.target.value)
+                                InputProps={{
+                                    readOnly: true,
                                 }}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
-                                required
                                 fullWidth
                                 id="email"
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
                                 value={email}
-                                onChange={(e)=> {
-                                    setEmail(e.target.value)
+                                InputProps={{
+                                    readOnly: true,
                                 }}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
-                                required
                                 fullWidth
                                 name="name"
                                 label="name"
                                 id="name"
                                 value={name}
-                                onChange={(e)=> {
-                                    setName(e.target.value)
+                                InputProps={{
+                                    readOnly: true,
                                 }}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
-                                required
                                 fullWidth
                                 name="phoneNumber"
                                 label="phoneNumber"
@@ -107,22 +114,8 @@ export default function SignUp() {
                                 id="phoneNumber"
                                 autoComplete="phoneNumber"
                                 value={phoneNumber}
-                                onChange={(e)=> {
-                                    const regex = /^[0-9\b -]{0,13}$/;
-                                    if (regex.test(e.target.value)) {
-                                        if(e.target.value.length == 3 || e.target.value.length === 8){
-                                            setPhoneNumber(e.target.value + "-");
-                                        }else{
-                                            setPhoneNumber(e.target.value);
-                                        }
-                                    }
-                                }}
-                                onKeyDown={(e)=>{
-                                    if(!(e.keyCode >= 48 && e.keyCode <= 57) && e.keyCode === 8){
-                                        if((e.target.value.length === 9 || e.target.value.length === 4) && phoneNumber.slice(e.target.value.length-1,e.target.value.length) == "-"){
-                                            setPhoneNumber(phoneNumber.slice(0,e.target.value.length-1))
-                                        }
-                                    }
+                                InputProps={{
+                                    readOnly: true,
                                 }}
                             />
                         </Grid>
@@ -133,3 +126,5 @@ export default function SignUp() {
         </Container>
     );
 }
+
+export default Profile
