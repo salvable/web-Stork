@@ -45,8 +45,17 @@ const Profile = ({match}) => {
 
     useEffect(()=>{
         async function getUserInfo(){
-            const response = await axios.get(`http://localhost:3000/getUser/${userId}`)
-            console.log(response)
+            try {
+                const response = await axios.get(`http://localhost:3000/getUser/${userId}`)
+
+                setId(response.data.user.userId)
+                setEmail(response.data.user.email)
+                setName(response.data.user.name)
+                setPhoneNumber(response.data.user.phoneNumber)
+            }catch(e){
+                alert("올바르지 않은 접근이거나 권한이 없습니다.")
+                window.location.replace('/')
+            }
         }
         getUserInfo()
     },[])
