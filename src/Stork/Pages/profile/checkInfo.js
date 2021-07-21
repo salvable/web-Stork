@@ -5,6 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import axios from "axios";
+import {useHistory} from "react-router";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -23,15 +25,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CheckInfo = ({match}) => {
+    const history = useHistory()
     const classes = useStyles();
     const userId = match.params.userId
 
     const [password,setPassword] = useState("")
 
-    useEffect(()=>{
-
-    },[])
-
+    const checkUser = async() => {
+        try{
+            const response = await axios.get(`http://localhost:3000/checkUser/${userId}?password=${password}`)
+            if(response.data.result){
+                history.replace(`/modify/${userId}`)
+            }
+        }catch (e) {
+            alert("비밀번호가 틀렸습니다.")
+        }
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -80,7 +89,9 @@ const CheckInfo = ({match}) => {
                             variant="contained"
                             color="secondary"
                             className={classes.submit}
-
+                            onClick={async()=>{
+                                await checkUser()
+                            }}
                         >
                             confirm
                         </Button>
