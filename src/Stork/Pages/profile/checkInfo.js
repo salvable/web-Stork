@@ -1,0 +1,96 @@
+import React, {useEffect, useState} from 'react';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+}));
+
+const CheckInfo = ({match}) => {
+    const classes = useStyles();
+    const userId = match.params.userId
+
+    const [password,setPassword] = useState("")
+
+    useEffect(()=>{
+
+    },[])
+
+
+    return (
+        <Container component="main" maxWidth="xs">
+            <div className={classes.paper}>
+                <Typography component="h1" variant="h5">
+                    User Confirmation
+                </Typography>
+                <form className={classes.form} noValidate>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <TextField
+                                autoComplete="fname"
+                                name="ID"
+                                variant="outlined"
+                                fullWidth
+                                id="ID"
+                                label="ID"
+                                value={userId}
+                                autoFocus
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                fullWidth
+                                type="password"
+                                id="password"
+                                label="Password"
+                                name="password"
+                                autoComplete="password"
+                                value={password}
+
+                                onChange={(e)=>{
+                                    setPassword(e.target.value)
+                                    console.log(password)
+                                }}
+
+                            />
+                        </Grid>
+
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            color="secondary"
+                            className={classes.submit}
+
+                        >
+                            confirm
+                        </Button>
+
+                    </Grid>
+                </form>
+            </div>
+
+        </Container>
+    );
+}
+
+export default CheckInfo
