@@ -67,7 +67,7 @@ export default function SignIn() {
                 </Typography>
                 <form className={classes.form} noValidate>
                     <TextField
-                        variant="outlined"
+                        variant="standard"
                         margin="normal"
                         value={id}
                         required
@@ -82,7 +82,7 @@ export default function SignIn() {
                         }}
                     />
                     <TextField
-                        variant="outlined"
+                        variant="standard"
                         margin="normal"
                         required
                         fullWidth

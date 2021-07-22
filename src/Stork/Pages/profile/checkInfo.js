@@ -35,6 +35,7 @@ const CheckInfo = ({match}) => {
         try{
             const response = await axios.get(`http://localhost:3000/checkUser/${userId}?password=${password}`)
             if(response.data.result){
+                alert("유저 정보가 확인되었습니다.")
                 history.replace(`/modify/${userId}`)
             }
         }catch (e) {
@@ -54,7 +55,7 @@ const CheckInfo = ({match}) => {
                             <TextField
                                 autoComplete="fname"
                                 name="ID"
-                                variant="outlined"
+                                variant="standard"
                                 fullWidth
                                 id="ID"
                                 label="ID"
@@ -67,7 +68,7 @@ const CheckInfo = ({match}) => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                variant="outlined"
+                                variant="standard"
                                 fullWidth
                                 type="password"
                                 id="password"

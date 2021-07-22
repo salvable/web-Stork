@@ -105,7 +105,7 @@ export default function SignUp() {
                                 error = {checkId()}
                                 helperText="5~20자의 영어,숫자만 사용 가능합니다."
                                 name="ID"
-                                variant="outlined"
+                                variant="standard"
                                 required
                                 fullWidth
                                 id="ID"
@@ -119,7 +119,7 @@ export default function SignUp() {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                variant="outlined"
+                                variant="standard"
                                 required
                                 error = {checkPw()}
                                 helperText="8~20자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
@@ -137,7 +137,7 @@ export default function SignUp() {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                variant="outlined"
+                                variant="standard"
                                 required
                                 fullWidth
                                 id="email"
@@ -152,7 +152,7 @@ export default function SignUp() {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                variant="outlined"
+                                variant="standard"
                                 required
                                 fullWidth
                                 name="name"
@@ -166,7 +166,7 @@ export default function SignUp() {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                variant="outlined"
+                                variant="standard"
                                 required
                                 fullWidth
                                 name="phoneNumber"

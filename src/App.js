@@ -11,6 +11,7 @@ import Favorite from "./Stork/Pages/favorite/favorite"
 import Contact from "./Stork/Pages/contact-us/contact-us"
 import Profile from "./Stork/Pages/profile/profile"
 import CheckInfo from "./Stork/Pages/profile/checkInfo";
+import ModifyInfo from "./Stork/Pages/profile/modifyInfo";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <Route path="/contact-us" component={Contact}/>
               <Route path="/profile/:userId" component={Profile}/>
               <Route path="/checkInfo/:userId" component={CheckInfo}/>
+              <Route path="/modify/:userId" component={ModifyInfo}/>
           </Switch>
       </Router>
   );

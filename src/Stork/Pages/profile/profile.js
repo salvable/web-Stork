@@ -71,7 +71,7 @@ const Profile = ({match}) => {
                             <TextField
                                 autoComplete="fname"
                                 name="ID"
-                                variant="outlined"
+                                variant="standard"
                                 fullWidth
                                 id="ID"
                                 label="ID"
@@ -84,7 +84,7 @@ const Profile = ({match}) => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                variant="outlined"
+                                variant="standard"
                                 fullWidth
                                 id="email"
                                 label="Email Address"
@@ -98,7 +98,7 @@ const Profile = ({match}) => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                variant="outlined"
+                                variant="standard"
                                 fullWidth
                                 name="name"
                                 label="name"
@@ -111,7 +111,7 @@ const Profile = ({match}) => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                variant="outlined"
+                                variant="standard"
                                 fullWidth
                                 name="phoneNumber"
                                 label="phoneNumber"
