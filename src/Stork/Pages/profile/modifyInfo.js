@@ -56,6 +56,23 @@ const ModifyInfo = ({match}) => {
         getUserInfo()
     },[])
 
+    const modifyUserInfo  = async() => {
+        try{
+            const response = await axios.put(`http://localhost:3000/updateUser/${userId}`,{
+                password: password,
+                email: email,
+                name: name,
+                phoneNumber: phoneNumber
+            })
+
+            if(response.data.user){
+                alert("회원정보 변경이 완료되었습니다.")
+                history.replace(`/profile/${userId}`)
+            }
+        } catch (e) {
+            alert("입력정보를 확인해주세요")
+        }
+    }
 
 
     return (
@@ -183,6 +200,29 @@ const ModifyInfo = ({match}) => {
                             variant="contained"
                             color="secondary"
                             className={classes.submit}
+                            onClick={ async() => {
+                                if(RegularExpression.checkPw(password)){
+                                    alert("Password 양식을 확인해주세요.")
+                                    return;
+                                }
+
+                                if(password != confirmPassword){
+                                    alert("비밀번호가 일치하지 않습니다.")
+                                    return;
+                                }
+
+                                if(!RegularExpression.checkEmail(email)){
+                                    alert("email 양식을 확인해주세요.")
+                                    return;
+                                }
+
+                                if(name.length > 30){
+                                    alert("이름 양식을 확인해주세요")
+                                    return;
+                                }
+
+                                await modifyUserInfo()
+                            }}
                         >
                             Modify
                         </Button>
