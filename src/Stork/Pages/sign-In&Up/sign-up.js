@@ -7,11 +7,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from "axios";
+import RegularExpression from "../../util/regularExpression"
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -43,30 +43,6 @@ export default function SignUp() {
     const [checkBox_1, setCheckBox_1] = useState(false)
     const [checkBox_2, setCheckBox_2] = useState(false)
     const [checkBox_3, setCheckBox_3] = useState(false)
-
-    const checkId = () =>{
-        const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/
-        const specialCharacters = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi
-
-        if(id.length >=5 && id.length <= 20 && !(korean.test(id)) && id.search(/\s/) === -1 && !(specialCharacters.test(id))){
-            return false
-        }else{
-            return true
-        }
-    }
-
-    const checkPw = () =>{
-        if(password.length >= 8 && password.length <= 20){
-            return false
-        }else{
-            return true
-        }
-    }
-
-    const checkEmail = () =>{
-        const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-        return regExp.test(email); // 형식에 맞는 경우 true 리턴
-    }
 
     const addUser = async() =>{
         try {
@@ -102,7 +78,7 @@ export default function SignUp() {
                         <Grid item xs={12}>
                             <TextField
                                 autoComplete="fname"
-                                error = {checkId()}
+                                error = {RegularExpression.checkId(id)}
                                 helperText="5~20자의 영어,숫자만 사용 가능합니다."
                                 name="ID"
                                 variant="standard"
@@ -121,7 +97,7 @@ export default function SignUp() {
                             <TextField
                                 variant="standard"
                                 required
-                                error = {checkPw()}
+                                error = {RegularExpression.checkPw(password)}
                                 helperText="8~20자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
                                 fullWidth
                                 name="password"
@@ -248,15 +224,15 @@ export default function SignUp() {
                         color="primary"
                         className={classes.submit}
                         onClick={async()=>{
-                            if(checkId()){
+                            if(RegularExpression.checkId(id)){
                                 alert("ID 양식을 확인해주세요.")
                                 return;
                             }
-                            if(checkPw()){
+                            if(RegularExpression.checkPw(password)){
                                 alert("Password 양식을 확인해주세요.")
                                 return;
                             }
-                            if(!checkEmail()){
+                            if(!RegularExpression.checkEmail(email)){
                                 alert("email 양식을 확인해주세요.")
                                 return;
                             }
