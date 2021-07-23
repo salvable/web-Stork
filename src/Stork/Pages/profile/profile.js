@@ -127,7 +127,7 @@ const Profile = ({match}) => {
                         <Button
                         fullWidth
                         variant="contained"
-                        color="secondary"
+                        color="primary"
                         className={classes.submit}
                         onClick={(e)=>{
                           history.push(`/checkInfo/${userId}`)

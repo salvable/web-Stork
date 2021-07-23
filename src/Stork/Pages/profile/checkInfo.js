@@ -88,7 +88,7 @@ const CheckInfo = ({match}) => {
                         <Button
                             fullWidth
                             variant="contained"
-                            color="secondary"
+                            color="primary"
                             className={classes.submit}
                             onClick={async()=>{
                                 await checkUser()
