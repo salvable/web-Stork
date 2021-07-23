@@ -74,6 +74,20 @@ const ModifyInfo = ({match}) => {
         }
     }
 
+    const deleteUser = async() =>{
+        try{
+            const response = await axios.delete(`http://localhost:3000/deleteUser/${userId}`)
+            if(response.data.result){
+                alert("회원 탈퇴되었습니다. 그동안 서비스를 이용해주셔서 감사합니다.")
+                localStorage.removeItem('accessToken')
+                localStorage.removeItem('refreshToken')
+                window.location.replace('/')
+            }
+        } catch(e){
+            alert("회원탈퇴에 실패하였습니다.")
+        }
+
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -225,6 +239,21 @@ const ModifyInfo = ({match}) => {
                             }}
                         >
                             Modify
+                        </Button>
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            color="secondary"
+                            className={classes.submit}
+                            onClick={ async() => {
+                                const result = window.confirm("정말로 회원탈퇴 하시겠습니까?")
+
+                                if(result){
+                                    await deleteUser()
+                                }
+                            }}
+                        >
+                            Withdraw
                         </Button>
 
                     </Grid>
