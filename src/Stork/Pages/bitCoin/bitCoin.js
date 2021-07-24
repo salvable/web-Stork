@@ -15,4 +15,5 @@ const bitCoin = () => {
     )
 };
 
+
 export default bitCoin
