@@ -5,7 +5,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import {useHistory} from "react-router";
-axios.defaults.withCredentials = true;
+
 
 const Navbar = () => {
     const history = useHistory()
@@ -30,13 +30,11 @@ const Navbar = () => {
         async function CheckAuth(token){
             if(token != null){
                 try{
-                    console.log("!!!!")
                     const response = await axios.get("http://localhost:3000/checkAuth",{
                         headers: {
                             Authorization: `Bearer ${token}`
                         }})
 
-                        console.log("##################")
                         setIsLogin(true)
                         const userId = await getUserId(response.data.userId)
                         setUserId(userId)
@@ -47,7 +45,6 @@ const Navbar = () => {
                             Authorization: `Bearer ${refreshToken}`
                         }})
 
-                    console.log("$$$$$$$$$$$$$$$$$$$")
                     window.localStorage.setItem("accessToken", refresh.data.token)
                     window.localStorage.setItem("refreshToken", refresh.data.refreshToken)
                     const userId = await getUserId(refresh.data.userId)

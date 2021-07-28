@@ -9,8 +9,6 @@ import Container from '@material-ui/core/Container';
 import axios from "axios";
 import {useHistory} from "react-router";
 
-axios.defaults.withCredentials = true;
-
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
