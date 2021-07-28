@@ -12,8 +12,11 @@ const Navbar = () => {
     const [isLogin,setIsLogin] = useState(false)
     const [userId, setUserId] = useState("")
 
-    const getUserId = async(userId) => {
-        const user = await axios.get(`http://localhost:3000/getUser/${userId}`)
+    const getUserId = async(userId,token) => {
+        const user = await axios.get(`http://localhost:3000/getUser/${userId}`,{
+            headers: {
+                Authorization: `Bearer ${token}`
+            }})
 
         // userId를 리턴
         return user.data.user.userId
@@ -36,7 +39,7 @@ const Navbar = () => {
                         }})
 
                         setIsLogin(true)
-                        const userId = await getUserId(response.data.userId)
+                        const userId = await getUserId(response.data.userId,token)
                         setUserId(userId)
                 }catch(e){
                     const refreshToken = localStorage.getItem("refreshToken")
@@ -47,15 +50,15 @@ const Navbar = () => {
 
                     window.localStorage.setItem("accessToken", refresh.data.token)
                     window.localStorage.setItem("refreshToken", refresh.data.refreshToken)
-                    const userId = await getUserId(refresh.data.userId)
+                    const userId = await getUserId(refresh.data.userId,token)
                     setUserId(userId)
                     window.location.reload()
                 }
             }
         }
 
-        const Token = localStorage.getItem("accessToken")
-        CheckAuth(Token)
+        const token = localStorage.getItem("accessToken")
+        CheckAuth(token)
     },[isLogin])
 
     return (
