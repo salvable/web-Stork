@@ -33,7 +33,11 @@ const CheckInfo = ({match}) => {
 
     const checkUser = async() => {
         try{
-            const response = await axios.get(`http://localhost:3000/checkUser/${userId}?password=${password}`)
+            const token = localStorage.getItem("accessToken")
+            const response = await axios.get(`http://localhost:3000/checkUser/${userId}?password=${password}`,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
             if(response.data.result){
                 alert("유저 정보가 확인되었습니다.")
                 history.replace(`/modify/${userId}`)

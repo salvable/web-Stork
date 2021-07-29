@@ -41,10 +41,15 @@ const ModifyInfo = ({match}) => {
     const [name, setName] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
 
+    const token = localStorage.getItem("accessToken")
+
     useEffect(()=>{
         async function getUserInfo(){
             try {
-                const response = await axios.get(`http://localhost:3000/getUser/${userId}`)
+                const response = await axios.get(`http://localhost:3000/getUser/${userId}`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }})
                 setEmail(response.data.user.email)
                 setName(response.data.user.name)
                 setPhoneNumber(response.data.user.phoneNumber)
@@ -63,7 +68,10 @@ const ModifyInfo = ({match}) => {
                 email: email,
                 name: name,
                 phoneNumber: phoneNumber
-            })
+            },{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
 
             if(response.data.user){
                 alert("회원정보 변경이 완료되었습니다.")
@@ -76,7 +84,10 @@ const ModifyInfo = ({match}) => {
 
     const deleteUser = async() =>{
         try{
-            const response = await axios.delete(`http://localhost:3000/deleteUser/${userId}`)
+            const response = await axios.delete(`http://localhost:3000/deleteUser/${userId}`,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
             if(response.data.result){
                 alert("회원 탈퇴되었습니다. 그동안 서비스를 이용해주셔서 감사합니다.")
                 localStorage.removeItem('accessToken')
