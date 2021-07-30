@@ -24,11 +24,17 @@ const Stork = () => {
     // 각각 상한가, 하한가, 거래상위, 시가총액 상위를 나타냄, 네이밍은 네이버 주식 url로 결정
     const [siseUpper,setSiseUpper] = useState([])
     const [siseLower,setSiseLower] = useState([])
+    const [storkList,setStorkList] = useState([])
 
 
 
     useEffect(() => {
+        async function getStorkList(){
+            const response = await axios.get("http://localhost:8000/crawling/getStorks")
+            setStorkList(response.data)
+        }
 
+        getStorkList()
     },[]);
 
     return (
