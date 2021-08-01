@@ -1,21 +1,33 @@
 import React, {useEffect, useState} from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {
+    InputAdornment,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TextField
+} from "@material-ui/core";
 import axios from "axios";
 import TableScrollbar from 'react-table-scrollbar'
+import SearchIcon from "@material-ui/icons/Search";
 
 const Stork = () => {
 
     const styles = theme => ({
         root: {
             padding: theme.spacing(3),
-            background: '#eeeeee'
+            background: '#eeeeee',
+            margin: '0.8rem'
         },
         paper: {
             padding: theme.spacing(3),
             textAlign: 'center',
             color: theme.palette.text.primary,
+            margin: '0.8rem'
         },
         table: {
             minWidth: 650,
@@ -38,17 +50,9 @@ const Stork = () => {
     },[]);
 
     return (
-        <div className={styles.root}>
-            <Grid container spacing={6} style={{height: "100%" }}>
+            <Grid container spacing={6} style={{height: "100%", marginTop: 5}}>
                 <Grid item xs={8}>
                     <TableContainer component={Paper}>
-                        <div style = {{
-                            display: 'flex',
-                            justifyContent:'center',
-                            alignItems: 'center',
-                        }}>
-                            <h3></h3>
-                        </div>
                         <Table className={styles.table} aria-label="simple table" >
                             <TableHead>
                                 <TableRow>
@@ -75,18 +79,32 @@ const Stork = () => {
 
                 <Grid item xs={4}>
                     <TableContainer component={Paper}>
-                        <div style = {{
-                            display: 'flex',
-                            justifyContent:'center',
-                            alignItems: 'center',
-                        }}>
-                            <h3>종목 목록</h3>
-                        </div>
                         <Table className={styles.table} aria-label="simple table" >
                             <TableHead>
                                 <TableRow>
+                                    <TextField
+                                        variant="outlined"
+                                        placeholder="StorkName Search"
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <SearchIcon />
+                                                </InputAdornment>
+                                            ),
+                                            style:{
+                                                backgroundColor: "white",
+                                                color: "black",
+                                                width: "195%",
+                                                margin: '5px'
+
+                                            }
+                                        }}
+                                    />
+                                </TableRow>
+                                <TableRow>
                                     <TableCell align="center">종목 코드 </TableCell>
                                     <TableCell align="center">종목 이름</TableCell>
+
                                 </TableRow>
                             </TableHead>
                         </Table>
@@ -108,7 +126,6 @@ const Stork = () => {
                 </TableContainer>
             </Grid>
         </Grid>
-        </div>
     );
 };
 

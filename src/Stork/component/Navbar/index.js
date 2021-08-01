@@ -92,7 +92,7 @@ const Navbar = () => {
                </NavMenu>
                <TextField
                    variant="outlined"
-                   label="Search"
+                   placeholder="Search"
                    InputProps={{
                        endAdornment: (
                            <InputAdornment position="end">
