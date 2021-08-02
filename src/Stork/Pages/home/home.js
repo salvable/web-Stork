@@ -64,7 +64,7 @@ const Home = () => {
 
     return (
         <div className={styles.root}>
-            <Grid container spacing={6} style={{height: "100%" }}>
+            <Grid container spacing={6} style={{height: "100%", marginTop: 1}}>
                 <Grid item xs={6}>
                     <TableContainer component={Paper}>
                         <div style = {{
@@ -124,6 +124,7 @@ const Home = () => {
                                     </TableRow>
 
                                 ))}
+
                             </TableBody>
                         </Table>
                     </TableContainer>
