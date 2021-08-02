@@ -35,10 +35,7 @@ const Stork = () => {
     });
 
     // 각각 상한가, 하한가, 거래상위, 시가총액 상위를 나타냄, 네이밍은 네이버 주식 url로 결정
-    const [siseLower,setSiseLower] = useState([])
     const [storkList,setStorkList] = useState([])
-
-
 
     useEffect(() => {
         async function getStorkList(){
@@ -49,11 +46,16 @@ const Stork = () => {
         getStorkList()
     },[]);
 
+    const getStorkList = async (search) =>{
+        const response = await axios.get(`http://localhost:8000/crawling/getStorks/${search}`)
+        setStorkList(response.data.storks)
+    }
+
     return (
-            <Grid container spacing={6} style={{height: "100%", marginTop: 5}}>
+            <Grid container spacing={6} style={{height: "100%", marginTop: 1}}>
                 <Grid item xs={8}>
                     <TableContainer component={Paper}>
-                        <Table className={styles.table} aria-label="simple table" >
+                        <Table aria-label="simple table" >
                             <TableHead>
                                 <TableRow>
                                     <TableCell align="center">종목명</TableCell>
@@ -63,7 +65,6 @@ const Stork = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {console.log(storkList)}
                                 {/*{siseUpper.map((row) => (*/}
                                 {/*    <TableRow key={row[0]}>*/}
                                 {/*        <TableCell align="center">{row[0]}</TableCell>*/}
@@ -79,7 +80,7 @@ const Stork = () => {
 
                 <Grid item xs={4}>
                     <TableContainer component={Paper}>
-                        <Table className={styles.table} aria-label="simple table" >
+                        <Table aria-label="simple table" >
                             <TableHead>
                                 <TableRow>
                                     <TextField
@@ -99,25 +100,28 @@ const Stork = () => {
 
                                             }
                                         }}
+                                        onChange={async (e)=>{
+                                            await getStorkList(e.target.value)
+                                        }}
                                     />
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell align="center">종목 코드 </TableCell>
-                                    <TableCell align="center">종목 이름</TableCell>
-
                                 </TableRow>
                             </TableHead>
                         </Table>
                     </TableContainer>
                     <TableContainer component={Paper}>
                     <TableScrollbar rows={30}>
-                        <Table>
+                        <Table className={styles.table} aria-label="simple table" stickyHeader>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="center">종목 이름</TableCell>
+                                    <TableCell align="center">종목 코드</TableCell>
+                                </TableRow>
+                            </TableHead>
                             <TableBody>
                                 {storkList.map((row) => (
                                     <TableRow key={row.stork_id}>
                                         <TableCell align="center">{row.stork_id}</TableCell>
                                         <TableCell align="center">{row.name}</TableCell>
-
                                     </TableRow>
                                 ))}
                             </TableBody>
