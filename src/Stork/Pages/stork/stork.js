@@ -15,8 +15,7 @@ import axios from "axios";
 import TableScrollbar from 'react-table-scrollbar'
 import SearchIcon from "@material-ui/icons/Search";
 
-const Stork = () => {
-
+const Stork = ({match}) => {
     const styles = theme => ({
         root: {
             padding: theme.spacing(3),
@@ -36,14 +35,25 @@ const Stork = () => {
 
     // 각각 상한가, 하한가, 거래상위, 시가총액 상위를 나타냄, 네이밍은 네이버 주식 url로 결정
     const [storkList,setStorkList] = useState([])
+    const [storkName,setStorkName] = useState("")
+
 
     useEffect(() => {
         async function getStorkList(){
             const response = await axios.get("http://localhost:8000/crawling/getStorks")
             setStorkList(response.data.storks)
         }
-
         getStorkList()
+    },[]);
+
+    useEffect(() => {
+        if(match.params.storkName == undefined){
+            setStorkName("삼성전자")
+        }else{
+            setStorkName(match.params.storkName)
+        }
+
+        console.log(storkName)
     },[]);
 
     const getStorkList = async (search) =>{
@@ -58,10 +68,7 @@ const Stork = () => {
                         <Table aria-label="simple table" >
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align="center">종목명</TableCell>
-                                    <TableCell align="center">현재가</TableCell>
-                                    <TableCell align="center">전일비</TableCell>
-                                    <TableCell align="center">등락률</TableCell>
+                                    <TableCell align="left"><h1>{storkName}</h1></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
