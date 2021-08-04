@@ -14,6 +14,7 @@ import {
 import axios from "axios";
 import TableScrollbar from 'react-table-scrollbar'
 import SearchIcon from "@material-ui/icons/Search";
+import chart from "../../Chart/storkChart.png"
 
 const Stork = ({match}) => {
     const styles = theme => ({
@@ -32,11 +33,9 @@ const Stork = ({match}) => {
             minWidth: 650,
         }
     });
-
     // 각각 상한가, 하한가, 거래상위, 시가총액 상위를 나타냄, 네이밍은 네이버 주식 url로 결정
     const [storkList,setStorkList] = useState([])
     const [storkName,setStorkName] = useState("")
-
 
     useEffect(() => {
         async function getStorkList(){
@@ -47,13 +46,17 @@ const Stork = ({match}) => {
     },[]);
 
     useEffect(() => {
-        if(match.params.storkName == undefined){
-            setStorkName("삼성전자")
-        }else{
-            setStorkName(match.params.storkName)
+        async function getStorkChart(){
+            if(match.params.storkName == undefined){
+                setStorkName("삼성전자")
+                const response = await axios.get(`http://localhost:8000/crawling/stork/getChart/삼성전자`)
+            }else{
+                setStorkName(match.params.storkName)
+                const response = await axios.get(`http://localhost:8000/crawling/stork/getChart/${match.params.storkName}`)
+            }
         }
 
-        console.log(storkName)
+        getStorkChart()
     },[]);
 
     const getStorkList = async (search) =>{
@@ -68,18 +71,24 @@ const Stork = ({match}) => {
                         <Table aria-label="simple table" >
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align="left"><h1>{storkName}</h1></TableCell>
+                                    <TableCell align="left" colSpan={3}><h1>{storkName}</h1></TableCell>
+
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {/*{siseUpper.map((row) => (*/}
-                                {/*    <TableRow key={row[0]}>*/}
-                                {/*        <TableCell align="center">{row[0]}</TableCell>*/}
-                                {/*        <TableCell align="center">{row[1]}</TableCell>*/}
-                                {/*        <TableCell align="center">{row[2]}</TableCell>*/}
-                                {/*        <TableCell align="center">{row[3]}</TableCell>*/}
-                                {/*    </TableRow>*/}
-                                {/*))}*/}
+                                <TableRow>
+                                    <TableCell rowSpan={2} style={{ width: "50%" }}>가격</TableCell>
+                                    <TableCell style={{ width: "25%" }}>고가</TableCell>
+                                    <TableCell style={{ width: "25%" }}>거래량</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell style={{ width: "25%" }}>저가</TableCell>
+                                    <TableCell style={{ width: "25%" }}>거래대금</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell colSpan={2}><img src={chart}></img></TableCell>
+                                    <TableCell>12312312</TableCell>
+                                </TableRow>
                             </TableBody>
                         </Table>
                     </TableContainer>
