@@ -36,6 +36,7 @@ const Stork = ({match}) => {
     // 각각 상한가, 하한가, 거래상위, 시가총액 상위를 나타냄, 네이밍은 네이버 주식 url로 결정
     const [storkList,setStorkList] = useState([])
     const [storkName,setStorkName] = useState("")
+    const [storkPrice,setStorkPrice] = useState([])
 
     useEffect(() => {
         async function getStorkList(){
@@ -55,13 +56,38 @@ const Stork = ({match}) => {
                 const response = await axios.get(`http://localhost:8000/crawling/stork/getChart/${match.params.storkName}`)
             }
         }
-
         getStorkChart()
     },[]);
+
+    useEffect(() => {
+        async function getStorkPrice(){
+            if(match.params.storkName == undefined){
+                const response = await axios.get(`http://localhost:8000/crawling/stork/삼성전자`)
+                setStorkPrice(response.data)
+            }else{
+                const response = await axios.get(`http://localhost:8000/crawling/stork/${match.params.storkName}`)
+                setStorkPrice(response.data)
+            }
+        }
+        getStorkPrice()
+    },[]);
+
 
     const getStorkList = async (search) =>{
         const response = await axios.get(`http://localhost:8000/crawling/getStorks/${search}`)
         setStorkList(response.data.storks)
+    }
+
+    const setStorkColor = () =>{
+        const str = String(storkPrice.variance)
+        console.log(str)
+        console.log(storkPrice.variance)
+        console.log(str.indexOf("하락"))
+        if(str.indexOf("하락") != -1){
+            return {color: "blue"}
+        }
+
+        return {color: "red"}
     }
 
     return (
@@ -77,7 +103,7 @@ const Stork = ({match}) => {
                             </TableHead>
                             <TableBody>
                                 <TableRow>
-                                    <TableCell rowSpan={2} style={{ width: "50%" }}>가격</TableCell>
+                                    <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{storkPrice.price}</h1><h4>전일대비 {storkPrice.variance}</h4></TableCell>
                                     <TableCell style={{ width: "25%" }}>고가</TableCell>
                                     <TableCell style={{ width: "25%" }}>거래량</TableCell>
                                 </TableRow>
