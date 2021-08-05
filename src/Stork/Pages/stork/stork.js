@@ -16,6 +16,7 @@ import TableScrollbar from 'react-table-scrollbar'
 import SearchIcon from "@material-ui/icons/Search";
 import chart from "../../Chart/storkChart.png"
 import Link from '@material-ui/core/Link';
+import {useHistory} from "react-router";
 
 const Stork = ({match}) => {
     const styles = theme => ({
@@ -38,6 +39,8 @@ const Stork = ({match}) => {
     const [storkList,setStorkList] = useState([])
     const [storkName,setStorkName] = useState("")
     const [storkPrice,setStorkPrice] = useState([])
+
+    const history = useHistory()
 
     useEffect(() => {
         async function getStorkList(){
@@ -165,9 +168,11 @@ const Stork = ({match}) => {
                             </TableHead>
                             <TableBody>
                                 {storkList.map((row) => (
-                                    <TableRow>
+                                    <TableRow onClick={() => {
+                                        window.location.replace("/stork/" + row.name)
+                                    }}>
                                             <TableCell align="center" >{row.stork_id}</TableCell>
-                                            <TableCell align="center"><Link href = {setLink(row.name)}>{row.name}</Link></TableCell>
+                                            <TableCell align="center" >{row.name}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
