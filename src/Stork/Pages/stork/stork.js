@@ -15,6 +15,7 @@ import axios from "axios";
 import TableScrollbar from 'react-table-scrollbar'
 import SearchIcon from "@material-ui/icons/Search";
 import chart from "../../Chart/storkChart.png"
+import Link from '@material-ui/core/Link';
 
 const Stork = ({match}) => {
     const styles = theme => ({
@@ -90,6 +91,10 @@ const Stork = ({match}) => {
         return {color: "red"}
     }
 
+    const setLink = (link) =>{
+        return "/stork/" + link
+    }
+
     return (
             <Grid container spacing={6} style={{height: "100%", marginTop: 1}}>
                 <Grid item xs={8}>
@@ -98,7 +103,6 @@ const Stork = ({match}) => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell align="left" colSpan={3}><h1>{storkName}</h1></TableCell>
-
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -161,9 +165,9 @@ const Stork = ({match}) => {
                             </TableHead>
                             <TableBody>
                                 {storkList.map((row) => (
-                                    <TableRow key={row.stork_id}>
-                                        <TableCell align="center">{row.stork_id}</TableCell>
-                                        <TableCell align="center">{row.name}</TableCell>
+                                    <TableRow>
+                                            <TableCell align="center" >{row.stork_id}</TableCell>
+                                            <TableCell align="center"><Link href = {setLink(row.name)}>{row.name}</Link></TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
