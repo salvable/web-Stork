@@ -51,13 +51,24 @@ const Stork = ({match}) => {
     },[]);
 
     useEffect(() => {
-        async function getStorkChart(){
-            if(match.params.storkName == undefined){
-                setStorkName("삼성전자")
-                const response = await axios.get(`http://localhost:8000/crawling/stork/getChart/삼성전자`)
+        async function getStorkById(){
+            if(match.params.storkId == undefined){
+                const response = await axios.get(`http://localhost:8000/crawling/getStorksById/005930`)
             }else{
-                setStorkName(match.params.storkName)
-                const response = await axios.get(`http://localhost:8000/crawling/stork/getChart/${match.params.storkName}`)
+                const response = await axios.get(`http://localhost:8000/crawling/getStorksById/${match.params.storkId}`)
+                setStorkName(response.data.storks.name)
+            }
+
+        }
+        getStorkById()
+    },[]);
+
+    useEffect(() => {
+        async function getStorkChart(){
+            if(match.params.storkId == undefined){
+                const response = await axios.get(`http://localhost:8000/crawling/stork/getChart/005930`)
+            }else{
+                const response = await axios.get(`http://localhost:8000/crawling/stork/getChart/${match.params.storkId}`)
             }
         }
         getStorkChart()
@@ -65,11 +76,11 @@ const Stork = ({match}) => {
 
     useEffect(() => {
         async function getStorkPrice(){
-            if(match.params.storkName == undefined){
-                const response = await axios.get(`http://localhost:8000/crawling/stork/삼성전자`)
+            if(match.params.storkId == undefined){
+                const response = await axios.get(`http://localhost:8000/crawling/stork/005930`)
                 setStorkPrice(response.data)
             }else{
-                const response = await axios.get(`http://localhost:8000/crawling/stork/${match.params.storkName}`)
+                const response = await axios.get(`http://localhost:8000/crawling/stork/${match.params.storkId}`)
                 setStorkPrice(response.data)
             }
         }
@@ -84,9 +95,7 @@ const Stork = ({match}) => {
 
     const setStorkColor = () =>{
         const str = String(storkPrice.variance)
-        console.log(str)
-        console.log(storkPrice.variance)
-        console.log(str.indexOf("하락"))
+
         if(str.indexOf("하락") != -1){
             return {color: "blue"}
         }
@@ -169,7 +178,7 @@ const Stork = ({match}) => {
                             <TableBody>
                                 {storkList.map((row) => (
                                     <TableRow onClick={() => {
-                                        window.location.replace("/stork/" + row.name)
+                                        window.location.replace("/stork/" + row.stork_id)
                                     }}>
                                             <TableCell align="center" >{row.stork_id}</TableCell>
                                             <TableCell align="center" >{row.name}</TableCell>

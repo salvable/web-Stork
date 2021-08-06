@@ -20,7 +20,7 @@ function App() {
           <Switch>
               <Route path="/" exact component={Home} />
               <Route exact path="/stork" component={Stork} />
-              <Route path="/stork/:storkName" component={Stork} />
+              <Route path="/stork/:storkId" component={Stork} />
               <Route path="/bitCoin" component={BitCoin} />
               <Route path="/signUp" component={SignUp} />
               <Route path="/signIn" component={SignIn} />
