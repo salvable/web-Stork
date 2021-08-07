@@ -15,10 +15,11 @@ import axios from "axios";
 import TableScrollbar from 'react-table-scrollbar'
 import SearchIcon from "@material-ui/icons/Search";
 import chart from "../../Chart/storkChart.png"
+import socketIOClient from "socket.io-client";
 import Link from '@material-ui/core/Link';
 import {useHistory} from "react-router";
 
-const Stork = ({match}) => {
+const Stork = ({match, userName, socket }) => {
     const styles = theme => ({
         root: {
             padding: theme.spacing(3),
@@ -39,6 +40,7 @@ const Stork = ({match}) => {
     const [storkList,setStorkList] = useState([])
     const [storkName,setStorkName] = useState("")
     const [storkPrice,setStorkPrice] = useState([])
+    const [chatMessage, setChatMessage] = useState("")
 
     const history = useHistory()
 
@@ -78,6 +80,7 @@ const Stork = ({match}) => {
         async function getStorkPrice(){
             if(match.params.storkId == undefined){
                 const response = await axios.get(`http://localhost:8000/crawling/stork/005930`)
+                setStorkName("삼성전자")
                 setStorkPrice(response.data)
             }else{
                 const response = await axios.get(`http://localhost:8000/crawling/stork/${match.params.storkId}`)
@@ -87,6 +90,15 @@ const Stork = ({match}) => {
         getStorkPrice()
     },[]);
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        socket.emit("onSend", {
+            userName: userName ? userName : localStorage.getItem("userName"),
+            msg: chatMessage,
+            timeStamp: new Date().toLocaleTimeString(),
+        });
+        setChatMessage("");
+    };
 
     const getStorkList = async (search) =>{
         const response = await axios.get(`http://localhost:8000/crawling/getStorks/${search}`)
@@ -129,7 +141,20 @@ const Stork = ({match}) => {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell colSpan={2}><img src={chart}></img></TableCell>
-                                    <TableCell>12312312</TableCell>
+                                    <TableCell>
+                                        <div className="ChatInput-container">
+                                            <form className="ChatInput-form" onSubmit={handleSubmit}>
+                                            <input
+                                                placeholder="메시지를 입력하세요."
+                                                value={chatMessage}
+                                                onChange={(e)=>{
+                                                    setChatMessage(e.target.value)
+                                                }}
+                                            ></input>
+                                            <button>전송</button>
+                                        </form>
+                                    </div>
+                                    </TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
