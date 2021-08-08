@@ -16,11 +16,11 @@ import TableScrollbar from 'react-table-scrollbar'
 import SearchIcon from "@material-ui/icons/Search";
 import chart from "../../Chart/storkChart.png"
 import socketIOClient from "socket.io-client";
-import ChatInput from "../../components/ChatInput/ChatInput";
-import ChatLog from "../../components/ChatLog/ChatLog";
+import ChatInput from "../../component/chat/chatInput";
+import ChatLog from "../../component/chat/chatLog"
 import {useHistory} from "react-router";
 
-const Stork = ({match, userName, socket }) => {
+const Stork = ({match, userName }) => {
     const styles = theme => ({
         root: {
             padding: theme.spacing(3),
@@ -41,8 +41,15 @@ const Stork = ({match, userName, socket }) => {
     const [storkList,setStorkList] = useState([])
     const [storkName,setStorkName] = useState("")
     const [storkPrice,setStorkPrice] = useState([])
-    const [chatMessage, setChatMessage] = useState("")
-    const [currentSocket, setCurrentSocket] = useState();
+    const [currentSocket, setCurrentSocket] = useState()
+
+    const userId = localStorage.getItem("userId")
+
+    const myInfo = {
+        roomName: match.params.storkId ? match.params.storkId : "005930",
+        userName: userId ? userId : "guest123",
+    };
+
 
     useEffect(() => {
         async function getStorkList(){
@@ -90,6 +97,16 @@ const Stork = ({match, userName, socket }) => {
         getStorkPrice()
     },[]);
 
+    useEffect(() => {
+        setCurrentSocket(socketIOClient("localhost:6000"));
+    }, []);
+
+    if (currentSocket) {
+        currentSocket.on("connect", () => {
+            currentSocket.emit("join", myInfo);
+        });
+    }
+
     const getStorkList = async (search) =>{
         const response = await axios.get(`http://localhost:8000/crawling/getStorks/${search}`)
         setStorkList(response.data.storks)
@@ -104,8 +121,6 @@ const Stork = ({match, userName, socket }) => {
 
         return {color: "red"}
     }
-
-
 
     return (
             <Grid container spacing={6} style={{height: "100%", marginTop: 1}}>
@@ -130,7 +145,7 @@ const Stork = ({match, userName, socket }) => {
                                 <TableRow>
                                     <TableCell colSpan={2}><img src={chart}></img></TableCell>
                                     <TableCell>
-                                        <ChatLog socket={currentSocket}></ChatLog>
+               {/*`                        <ChatLog socket={currentSocket}></ChatLog>`*/}
                                         <ChatInput userName={userName} socket={currentSocket}></ChatInput>
                                     </TableCell>
                                 </TableRow>

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import socketIOClient from "socket.io-client";
-import "./ChatInput.css";
+import "./chatInput.css";
 
 const ChatInput = ({ userName, socket }) => {
     const [chatMessage, setChatMessage] = useState("");
@@ -8,7 +8,7 @@ const ChatInput = ({ userName, socket }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         socket.emit("onSend", {
-            userName: userName ? userName : localStorage.getItem("userName"),
+            userName: userName ? localStorage.getItem("userId") : "guest123",
             msg: chatMessage,
             timeStamp: new Date().toLocaleTimeString(),
         });
