@@ -16,7 +16,8 @@ import TableScrollbar from 'react-table-scrollbar'
 import SearchIcon from "@material-ui/icons/Search";
 import chart from "../../Chart/storkChart.png"
 import socketIOClient from "socket.io-client";
-import Link from '@material-ui/core/Link';
+import ChatInput from "../../components/ChatInput/ChatInput";
+import ChatLog from "../../components/ChatLog/ChatLog";
 import {useHistory} from "react-router";
 
 const Stork = ({match, userName, socket }) => {
@@ -41,8 +42,7 @@ const Stork = ({match, userName, socket }) => {
     const [storkName,setStorkName] = useState("")
     const [storkPrice,setStorkPrice] = useState([])
     const [chatMessage, setChatMessage] = useState("")
-
-    const history = useHistory()
+    const [currentSocket, setCurrentSocket] = useState();
 
     useEffect(() => {
         async function getStorkList(){
@@ -90,16 +90,6 @@ const Stork = ({match, userName, socket }) => {
         getStorkPrice()
     },[]);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        socket.emit("onSend", {
-            userName: userName ? userName : localStorage.getItem("userName"),
-            msg: chatMessage,
-            timeStamp: new Date().toLocaleTimeString(),
-        });
-        setChatMessage("");
-    };
-
     const getStorkList = async (search) =>{
         const response = await axios.get(`http://localhost:8000/crawling/getStorks/${search}`)
         setStorkList(response.data.storks)
@@ -115,9 +105,7 @@ const Stork = ({match, userName, socket }) => {
         return {color: "red"}
     }
 
-    const setLink = (link) =>{
-        return "/stork/" + link
-    }
+
 
     return (
             <Grid container spacing={6} style={{height: "100%", marginTop: 1}}>
@@ -142,18 +130,8 @@ const Stork = ({match, userName, socket }) => {
                                 <TableRow>
                                     <TableCell colSpan={2}><img src={chart}></img></TableCell>
                                     <TableCell>
-                                        <div className="ChatInput-container">
-                                            <form className="ChatInput-form" onSubmit={handleSubmit}>
-                                            <input
-                                                placeholder="메시지를 입력하세요."
-                                                value={chatMessage}
-                                                onChange={(e)=>{
-                                                    setChatMessage(e.target.value)
-                                                }}
-                                            ></input>
-                                            <button>전송</button>
-                                        </form>
-                                    </div>
+                                        <ChatLog socket={currentSocket}></ChatLog>
+                                        <ChatInput userName={userName} socket={currentSocket}></ChatInput>
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
