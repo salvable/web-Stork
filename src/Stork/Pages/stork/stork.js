@@ -18,9 +18,8 @@ import chart from "../../Chart/storkChart.png"
 import socketIOClient from "socket.io-client";
 import ChatInput from "../../component/chat/chatInput";
 import ChatLog from "../../component/chat/chatLog"
-import {useHistory} from "react-router";
 
-const Stork = ({match, userName }) => {
+const Stork = ({match}) => {
     const styles = theme => ({
         root: {
             padding: theme.spacing(3),
@@ -47,9 +46,8 @@ const Stork = ({match, userName }) => {
 
     const myInfo = {
         roomName: match.params.storkId ? match.params.storkId : "005930",
-        userName: userId ? userId : "guest123",
+        userName: userId ? userId : "guest",
     };
-
 
     useEffect(() => {
         async function getStorkList(){
@@ -98,13 +96,14 @@ const Stork = ({match, userName }) => {
     },[]);
 
     useEffect(() => {
-        setCurrentSocket(socketIOClient("localhost:6000"));
+        setCurrentSocket(socketIOClient("localhost:3002"));
     }, []);
 
     if (currentSocket) {
         currentSocket.on("connect", () => {
             currentSocket.emit("join", myInfo);
         });
+
     }
 
     const getStorkList = async (search) =>{
@@ -118,7 +117,6 @@ const Stork = ({match, userName }) => {
         if(str.indexOf("하락") != -1){
             return {color: "blue"}
         }
-
         return {color: "red"}
     }
 
@@ -144,10 +142,13 @@ const Stork = ({match, userName }) => {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell colSpan={2}><img src={chart}></img></TableCell>
-                                    <TableCell>
-               {/*`                        <ChatLog socket={currentSocket}></ChatLog>`*/}
-                                        <ChatInput userName={userName} socket={currentSocket}></ChatInput>
-                                    </TableCell>
+                                    <TableRow>
+                                        <TableCell >
+                                            <h3>채팅방</h3>
+                                            <ChatLog socket={currentSocket}></ChatLog>
+                                            <ChatInput userId={userId} socket={currentSocket}></ChatInput>
+                                        </TableCell>
+                                    </TableRow>
                                 </TableRow>
                             </TableBody>
                         </Table>
