@@ -72,15 +72,16 @@ const Stork = ({match}) => {
     },[]);
 
     useEffect(() => {
-        setCurrentSocket(socketIOClient("localhost:3002"));
-    }, []);
+        if (currentSocket) {
+            currentSocket.on("connect", () => {
+                currentSocket.emit("join", myInfo);
+            });
+        }else{
+            setCurrentSocket(socketIOClient("localhost:3002"));
+        }
+    }, [currentSocket]);
 
-    if (currentSocket) {
-        currentSocket.on("connect", () => {
-            currentSocket.emit("join", myInfo);
-        });
 
-    }
 
     const setStorkColor = () =>{
         const str = String(storkPrice.variance)
