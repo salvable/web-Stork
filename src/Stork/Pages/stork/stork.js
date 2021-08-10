@@ -18,26 +18,11 @@ import chart from "../../Chart/storkChart.png"
 import socketIOClient from "socket.io-client";
 import ChatInput from "../../component/chat/chatInput";
 import ChatLog from "../../component/chat/chatLog"
+import StorkTable from "./storkTable/table"
 
 const Stork = ({match}) => {
-    const styles = theme => ({
-        root: {
-            padding: theme.spacing(3),
-            background: '#eeeeee',
-            margin: '0.8rem'
-        },
-        paper: {
-            padding: theme.spacing(3),
-            textAlign: 'center',
-            color: theme.palette.text.primary,
-            margin: '0.8rem'
-        },
-        table: {
-            minWidth: 650,
-        }
-    });
+
     // 각각 상한가, 하한가, 거래상위, 시가총액 상위를 나타냄, 네이밍은 네이버 주식 url로 결정
-    const [storkList,setStorkList] = useState([])
     const [storkName,setStorkName] = useState("")
     const [storkPrice,setStorkPrice] = useState([])
     const [currentSocket, setCurrentSocket] = useState()
@@ -50,14 +35,6 @@ const Stork = ({match}) => {
     };
 
     useEffect(() => {
-        async function getStorkList(){
-            const response = await axios.get("http://localhost:8000/crawling/getStorks")
-            setStorkList(response.data.storks)
-        }
-        getStorkList()
-    },[]);
-
-    useEffect(() => {
         async function getStorkById(){
             if(match.params.storkId == undefined){
                 const response = await axios.get(`http://localhost:8000/crawling/getStorksById/005930`)
@@ -65,7 +42,6 @@ const Stork = ({match}) => {
                 const response = await axios.get(`http://localhost:8000/crawling/getStorksById/${match.params.storkId}`)
                 setStorkName(response.data.storks.name)
             }
-
         }
         getStorkById()
     },[]);
@@ -104,11 +80,6 @@ const Stork = ({match}) => {
             currentSocket.emit("join", myInfo);
         });
 
-    }
-
-    const getStorkList = async (search) =>{
-        const response = await axios.get(`http://localhost:8000/crawling/getStorks/${search}`)
-        setStorkList(response.data.storks)
     }
 
     const setStorkColor = () =>{
@@ -154,60 +125,9 @@ const Stork = ({match}) => {
                         </Table>
                     </TableContainer>
                 </Grid>
-
                 <Grid item xs={4}>
-                    <TableContainer component={Paper}>
-                        <Table aria-label="simple table" >
-                            <TableHead>
-                                <TableRow>
-                                    <TextField
-                                        variant="outlined"
-                                        placeholder="StorkName Search"
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <SearchIcon />
-                                                </InputAdornment>
-                                            ),
-                                            style:{
-                                                backgroundColor: "white",
-                                                color: "black",
-                                                width: "195%",
-                                                margin: '5px'
-
-                                            }
-                                        }}
-                                        onChange={async (e)=>{
-                                            await getStorkList(e.target.value)
-                                        }}
-                                    />
-                                </TableRow>
-                            </TableHead>
-                        </Table>
-                    </TableContainer>
-                    <TableContainer component={Paper}>
-                    <TableScrollbar rows={30}>
-                        <Table className={styles.table} aria-label="simple table" stickyHeader>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align="center">종목 이름</TableCell>
-                                    <TableCell align="center">종목 코드</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {storkList.map((row) => (
-                                    <TableRow onClick={() => {
-                                        window.location.replace("/stork/" + row.stork_id)
-                                    }}>
-                                            <TableCell align="center" >{row.stork_id}</TableCell>
-                                            <TableCell align="center" >{row.name}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                     </TableScrollbar>
-                </TableContainer>
-            </Grid>
+                        <StorkTable></StorkTable>
+                </Grid>
         </Grid>
     );
 };
