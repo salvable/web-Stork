@@ -21,7 +21,7 @@ const ChatLog = ({ socket }) => {
     }, [socket]);
 
     return (
-        <div>
+        <div style={{height: "50vh", overflow: "auto"}}>
             {msgList.map((msg, idx) => (
                 <div key={idx}>
                     <div>{msg.userName} ({msg.timeStamp})</div>

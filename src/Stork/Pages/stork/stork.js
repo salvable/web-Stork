@@ -115,7 +115,7 @@ const Stork = ({match}) => {
                                 <TableRow>
                                     <TableCell colSpan={2}><img src={chart}></img></TableCell>
                                     <TableRow>
-                                        <TableCell >
+                                        <TableCell height={600} >
                                             <h3>채팅방</h3>
                                             <ChatLog socket={currentSocket}></ChatLog>
                                             <ChatInput userId={userId} socket={currentSocket}></ChatInput>
