@@ -1,7 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 
 const ChatLog = ({ socket }) => {
     const [msgList, setMsgList] = useState([]);
+
+
+    const messagesEndRef = useRef(null)
+
+    const scrollToBottom = () => {
+        messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+    }
+
+    useEffect(scrollToBottom, [msgList]);
 
     useEffect(() => {
         if(socket){
@@ -28,6 +37,8 @@ const ChatLog = ({ socket }) => {
                     <div>{msg.msg}</div>
                 </div>
             ))}
+
+            <div ref={messagesEndRef}></div>
         </div>
     );
 };
