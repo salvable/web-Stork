@@ -17,20 +17,33 @@ import chart from "../../Chart/storkChart.png";
 import ChatLog from "../../component/chat/chatLog";
 import ChatInput from "../../component/chat/chatInput";
 import socketIOClient from "socket.io-client";
+import axios from "axios";
 
 const Bitcoin = ({match}) => {
 
-    const [storkName,setStorkName] = useState("")
-    const [storkPrice,setStorkPrice] = useState([])
+    const [bitcoin,setBitcoin] = useState("")
     const [currentSocket, setCurrentSocket] = useState()
 
     const userId = localStorage.getItem("userId")
 
     const myInfo = {
-        roomName: match.params.storkId ? match.params.storkId : "005930",
+        roomName: match.params.bitCoinId ? match.params.bitCoinId : "KRW-BTC",
         userName: userId ? userId : "guest",
     };
 
+    useEffect(() => {
+        async function getBitcoin(){
+            if(match.params.storkId == undefined){
+                const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinPrice/KRW-BTC`)
+                console.log(response.data)
+                setBitcoin(response.data)
+            }else{
+                const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinPrice/${match.params.bitCoinId}`)
+                setBitcoin(response.data)
+            }
+        }
+        getBitcoin()
+    }, [currentSocket]);
 
     useEffect(() => {
         if (currentSocket) {
@@ -45,9 +58,9 @@ const Bitcoin = ({match}) => {
 
 
     const setStorkColor = () =>{
-        const str = String(storkPrice.variance)
+        const str = String(bitcoin.change)
 
-        if(str.indexOf("하락") != -1){
+        if(str.indexOf("FALL") != -1){
             return {color: "blue"}
         }
         return {color: "red"}
@@ -60,17 +73,17 @@ const Bitcoin = ({match}) => {
                     <Table aria-label="simple table" >
                         <TableHead>
                             <TableRow>
-                                <TableCell align="left" colSpan={3}><h1>{storkName}</h1></TableCell>
+                                <TableCell align="left" colSpan={3}><h1>{bitcoin.name}</h1></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow>
-                                <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{storkPrice.price}</h1><h4>전일대비 {storkPrice.variance}</h4></TableCell>
-                                <TableCell style={{ width: "25%" ,color: "red"}}>고가 {storkPrice.highPrice}</TableCell>
+                                <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{bitcoin.price}</h1><h4>전일대비 {bitcoin.change_price}{bitcoin.change}</h4></TableCell>
+                                <TableCell style={{ width: "25%" ,color: "red"}}>고가 {bitcoin.high_price}</TableCell>
                                 <TableCell style={{ width: "25%" }}>거래량</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell style={{ width: "25%" ,color: "blue"}}>저가 {storkPrice.lowPrice}</TableCell>
+                                <TableCell style={{ width: "25%" ,color: "blue"}}>저가 {bitcoin.low_price}</TableCell>
                                 <TableCell style={{ width: "25%" }}>거래대금</TableCell>
                             </TableRow>
                             <TableRow>

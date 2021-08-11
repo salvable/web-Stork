@@ -21,7 +21,8 @@ function App() {
               <Route path="/" exact component={Home} />
               <Route exact path="/stork" component={Stork} />
               <Route path="/stork/:storkId" component={Stork} />
-              <Route path="/bitCoin" component={BitCoin} />
+              <Route exact path="/bitCoin" component={BitCoin} />
+              <Route path="/bitCoin/:bitcoinId" component={BitCoin} />
               <Route path="/signUp" component={SignUp} />
               <Route path="/signIn" component={SignIn} />
               <Route path="/favorite" component={Favorite}/>
