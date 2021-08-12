@@ -90,7 +90,7 @@ const StorkTable = () => {
                             <TableBody>
                                 {storkList.map((row) => (
                                     <TableRow onClick={() => {
-                                        window.location.replace("/stork/" + row.stork_id)
+                                        window.location.href = "/stork/" + row.stork_id
                                     }}>
                                         <TableCell align="center" >{row.stork_id}</TableCell>
                                         <TableCell align="center" >{row.name}</TableCell>

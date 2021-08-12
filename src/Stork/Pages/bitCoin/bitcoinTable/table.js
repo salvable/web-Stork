@@ -91,8 +91,11 @@ const BitCoinTable = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
+
                             {coinList.map((row) => (
-                                <TableRow key={row.stork_id}>
+                                <TableRow onClick={() => {
+                                    window.location.href = "/bitCoin/" + row.market
+                                }}>
                                     <TableCell align="center">{row.market}</TableCell>
                                     <TableCell align="center">{row.name}</TableCell>
                                     <TableCell align="center">{row.eng_name}</TableCell>

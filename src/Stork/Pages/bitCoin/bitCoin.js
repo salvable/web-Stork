@@ -18,6 +18,7 @@ import ChatLog from "../../component/chat/chatLog";
 import ChatInput from "../../component/chat/chatInput";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
+import {useHistory} from "react-router";
 
 const Bitcoin = ({match}) => {
 
@@ -25,6 +26,7 @@ const Bitcoin = ({match}) => {
     const [currentSocket, setCurrentSocket] = useState()
 
     const userId = localStorage.getItem("userId")
+    const history = useHistory()
 
     const myInfo = {
         roomName: match.params.bitCoinId ? match.params.bitCoinId : "KRW-BTC",
@@ -33,21 +35,25 @@ const Bitcoin = ({match}) => {
 
     useEffect(() => {
         async function getBitcoin(){
-            if(match.params.storkId == undefined){
+            if(match.params.bitCoinId == undefined){
                 const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinPrice/KRW-BTC`)
-                console.log(response.data)
                 setBitcoin(response.data)
             }else{
-                const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinPrice/${match.params.bitCoinId}`)
-                setBitcoin(response.data)
+                try {
+                    const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinPrice/${match.params.bitCoinId}`)
+                    setBitcoin(response.data)
+                }catch (e){
+                    alert("상장 폐지된 코인입니다!")
+                    history.goBack()
+                }
             }
         }
         getBitcoin()
-    }, [currentSocket]);
+    }, []);
 
     useEffect(() => {
         async function getStorkChart(){
-            if(match.params.storkId == undefined){
+            if(match.params.bitCoinId == undefined){
                 const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinChart/KRW-BTC`)
             }else{
                 const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinChart/${match.params.bitCoinId}`)
