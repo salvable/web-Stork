@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 
 import BitCoinTable from "./bitcoinTable/table";
-import chart from "../../Chart/storkChart.png";
+import chart from "../../Chart/coinChart.png";
 import ChatLog from "../../component/chat/chatLog";
 import ChatInput from "../../component/chat/chatInput";
 import socketIOClient from "socket.io-client";
@@ -44,6 +44,17 @@ const Bitcoin = ({match}) => {
         }
         getBitcoin()
     }, [currentSocket]);
+
+    useEffect(() => {
+        async function getStorkChart(){
+            if(match.params.storkId == undefined){
+                const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinChart/KRW-BTC`)
+            }else{
+                const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinChart/${match.params.bitCoinId}`)
+            }
+        }
+        getStorkChart()
+    },[]);
 
     useEffect(() => {
         if (currentSocket) {
