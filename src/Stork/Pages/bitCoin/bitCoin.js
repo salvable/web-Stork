@@ -55,8 +55,6 @@ const Bitcoin = ({match}) => {
         }
     }, [currentSocket]);
 
-
-
     const setStorkColor = () =>{
         const str = String(bitcoin.change)
 
@@ -64,6 +62,16 @@ const Bitcoin = ({match}) => {
             return {color: "blue"}
         }
         return {color: "red"}
+    }
+
+    const setChange = (change) =>{
+        if(change == "FALL"){
+            return " 하락"
+        }else if (change == "EVEN"){
+            return " 보합"
+        }else{
+            return " 상승"
+        }
     }
 
     return (
@@ -78,7 +86,7 @@ const Bitcoin = ({match}) => {
                         </TableHead>
                         <TableBody>
                             <TableRow>
-                                <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{bitcoin.price}</h1><h4>전일대비 {bitcoin.change_price}{bitcoin.change}</h4></TableCell>
+                                <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{bitcoin.price}</h1><h4>전일대비 {bitcoin.change_price}{setChange(bitcoin.change)}</h4></TableCell>
                                 <TableCell style={{ width: "25%" ,color: "red"}}>고가 {bitcoin.high_price}</TableCell>
                                 <TableCell style={{ width: "25%" }}>거래량</TableCell>
                             </TableRow>
