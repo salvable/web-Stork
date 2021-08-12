@@ -60,6 +60,7 @@ const Navbar = () => {
 
                     window.localStorage.setItem("accessToken", refresh.data.token)
                     window.localStorage.setItem("refreshToken", refresh.data.refreshToken)
+                    setIsLogin(true)
                     const userId = await getUserId(refresh.data.userId,token)
                     window.localStorage.setItem("userId", userId)
                     setUserId(userId)
