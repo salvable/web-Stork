@@ -29,6 +29,7 @@ const Stork = ({match}) => {
     const [storkName,setStorkName] = useState("")
     const [storkPrice,setStorkPrice] = useState([])
     const [currentSocket, setCurrentSocket] = useState()
+    const [isExistFavorite,setIsExistFavorite] = useState(false)
 
     const token = localStorage.getItem('accessToken')
     const userId = localStorage.getItem("userId")
@@ -85,6 +86,29 @@ const Stork = ({match}) => {
         }
     }, [currentSocket]);
 
+    useEffect(() => {
+        async function getFavorite(){
+            if(match.params.storkId == undefined){
+                const response = await axios.get(`http://localhost:3000/favorite/${userId}?favoriteId=005930`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }})
+                if(response.data.favorite != null){
+                    setIsExistFavorite(true)
+                }
+            }else{
+                const response = await axios.get(`http://localhost:3000/favorite/${userId}?favoriteId=${match.params.storkId}`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }})
+                if(response.data.favorite != null){
+                    setIsExistFavorite(true)
+                }
+            }
+        }
+        getFavorite()
+    },[]);
+
     const setStorkColor = () =>{
         const str = String(storkPrice.variance)
 
@@ -94,9 +118,11 @@ const Stork = ({match}) => {
         return {color: "red"}
     }
 
-    const isExistFavorite = () =>{
-
-        return <StarIcon/>
+    const setIcon = () =>{
+        if(isExistFavorite == true){
+            return <StarIcon/>
+        }
+        return <StarBorderIcon/>
     }
 
     return (
@@ -117,7 +143,7 @@ const Stork = ({match}) => {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell style={{ width: "25%" ,color: "blue"}}>저가 {storkPrice.lowPrice}</TableCell>
-                                    <TableCell style={{ width: "25%" }}>즐겨찾기 : <Button variant="contained" color="primary">{isExistFavorite()}</Button></TableCell>
+                                    <TableCell style={{ width: "25%" }}>즐겨찾기 : <Button variant="contained" color="primary">{setIcon()}</Button></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell colSpan={2}><img src={chart}></img></TableCell>
