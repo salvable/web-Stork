@@ -19,6 +19,9 @@ import socketIOClient from "socket.io-client";
 import ChatInput from "../../component/chat/chatInput";
 import ChatLog from "../../component/chat/chatLog"
 import StorkTable from "./storkTable/table"
+import Button from "@material-ui/core/Button";
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import StarIcon from '@material-ui/icons/Star';
 
 const Stork = ({match}) => {
 
@@ -27,6 +30,7 @@ const Stork = ({match}) => {
     const [storkPrice,setStorkPrice] = useState([])
     const [currentSocket, setCurrentSocket] = useState()
 
+    const token = localStorage.getItem('accessToken')
     const userId = localStorage.getItem("userId")
 
     const myInfo = {
@@ -35,15 +39,16 @@ const Stork = ({match}) => {
     };
 
     useEffect(() => {
-        async function getStorkById(){
+        async function setStorkNameById(){
             if(match.params.storkId == undefined){
                 const response = await axios.get(`http://localhost:8000/crawling/getStorksById/005930`)
+                setStorkName("삼성전자")
             }else{
                 const response = await axios.get(`http://localhost:8000/crawling/getStorksById/${match.params.storkId}`)
                 setStorkName(response.data.storks.name)
             }
         }
-        getStorkById()
+        setStorkNameById()
     },[]);
 
     useEffect(() => {
@@ -61,7 +66,6 @@ const Stork = ({match}) => {
         async function getStorkPrice(){
             if(match.params.storkId == undefined){
                 const response = await axios.get(`http://localhost:8000/crawling/stork/005930`)
-                setStorkName("삼성전자")
                 setStorkPrice(response.data)
             }else{
                 const response = await axios.get(`http://localhost:8000/crawling/stork/${match.params.storkId}`)
@@ -81,8 +85,6 @@ const Stork = ({match}) => {
         }
     }, [currentSocket]);
 
-
-
     const setStorkColor = () =>{
         const str = String(storkPrice.variance)
 
@@ -90,6 +92,11 @@ const Stork = ({match}) => {
             return {color: "blue"}
         }
         return {color: "red"}
+    }
+
+    const isExistFavorite = () =>{
+
+        return <StarIcon/>
     }
 
     return (
@@ -106,11 +113,11 @@ const Stork = ({match}) => {
                                 <TableRow>
                                     <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{storkPrice.price}</h1><h4>전일대비 {storkPrice.variance}</h4></TableCell>
                                     <TableCell style={{ width: "25%" ,color: "red"}}>고가 {storkPrice.highPrice}</TableCell>
-                                    <TableCell style={{ width: "25%" }}>거래량</TableCell>
+                                    <TableCell style={{ width: "25%" }}>거래 : <Button variant="contained" color="primary">매수</Button> <Button variant="contained" color="secondary">매도</Button></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell style={{ width: "25%" ,color: "blue"}}>저가 {storkPrice.lowPrice}</TableCell>
-                                    <TableCell style={{ width: "25%" }}>거래대금</TableCell>
+                                    <TableCell style={{ width: "25%" }}>즐겨찾기 : <Button variant="contained" color="primary">{isExistFavorite()}</Button></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell colSpan={2}><img src={chart}></img></TableCell>
