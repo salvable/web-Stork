@@ -26,6 +26,7 @@ import StarIcon from '@material-ui/icons/Star';
 const Stork = ({match}) => {
 
     // 각각 상한가, 하한가, 거래상위, 시가총액 상위를 나타냄, 네이밍은 네이버 주식 url로 결정
+    const [storkId, setStorkId] = useState("")
     const [storkName,setStorkName] = useState("")
     const [storkPrice,setStorkPrice] = useState([])
     const [currentSocket, setCurrentSocket] = useState()
@@ -44,9 +45,11 @@ const Stork = ({match}) => {
             if(match.params.storkId == undefined){
                 const response = await axios.get(`http://localhost:8000/crawling/getStorksById/005930`)
                 setStorkName("삼성전자")
+                setStorkId("005930")
             }else{
                 const response = await axios.get(`http://localhost:8000/crawling/getStorksById/${match.params.storkId}`)
                 setStorkName(response.data.storks.name)
+                setStorkId(match.params.storkId)
             }
         }
         setStorkNameById()
@@ -54,27 +57,18 @@ const Stork = ({match}) => {
 
     useEffect(() => {
         async function getStorkChart(){
-            if(match.params.storkId == undefined){
-                const response = await axios.get(`http://localhost:8000/crawling/stork/getChart/005930`)
-            }else{
-                const response = await axios.get(`http://localhost:8000/crawling/stork/getChart/${match.params.storkId}`)
-            }
+                const response = await axios.get(`http://localhost:8000/crawling/stork/getChart/${storkId}`)
         }
         getStorkChart()
-    },[]);
+    },[storkId]);
 
     useEffect(() => {
         async function getStorkPrice(){
-            if(match.params.storkId == undefined){
-                const response = await axios.get(`http://localhost:8000/crawling/stork/005930`)
+                const response = await axios.get(`http://localhost:8000/crawling/stork/${storkId}`)
                 setStorkPrice(response.data)
-            }else{
-                const response = await axios.get(`http://localhost:8000/crawling/stork/${match.params.storkId}`)
-                setStorkPrice(response.data)
-            }
         }
         getStorkPrice()
-    },[]);
+    },[storkId]);
 
     useEffect(() => {
         if (currentSocket) {
@@ -88,16 +82,7 @@ const Stork = ({match}) => {
 
     useEffect(() => {
         async function getFavorite(){
-            if(match.params.storkId == undefined){
-                const response = await axios.get(`http://localhost:3000/favorite/${userId}?favoriteId=005930`,{
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }})
-                if(response.data.favorite != null){
-                    setIsExistFavorite(true)
-                }
-            }else{
-                const response = await axios.get(`http://localhost:3000/favorite/${userId}?favoriteId=${match.params.storkId}`,{
+                const response = await axios.get(`http://localhost:3000/favorite/${userId}?favoriteId=${storkId}`,{
                     headers: {
                         Authorization: `Bearer ${token}`
                     }})
@@ -105,9 +90,8 @@ const Stork = ({match}) => {
                     setIsExistFavorite(true)
                 }
             }
-        }
         getFavorite()
-    },[]);
+    },[storkId]);
 
     const setStorkColor = () =>{
         const str = String(storkPrice.variance)
@@ -123,6 +107,18 @@ const Stork = ({match}) => {
             return <StarIcon/>
         }
         return <StarBorderIcon/>
+    }
+
+    const addFavorite = async() =>{
+        const response = await axios.post(`http://localhost:3000/favorite/${userId}`,{
+            favoriteId: storkId,
+            favoriteName: storkName,
+          }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }})
+        setIsExistFavorite(true)
+        alert("즐겨찾기에 추가되었습니다.")
     }
 
     return (
@@ -143,7 +139,18 @@ const Stork = ({match}) => {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell style={{ width: "25%" ,color: "blue"}}>저가 {storkPrice.lowPrice}</TableCell>
-                                    <TableCell style={{ width: "25%" }}>즐겨찾기 : <Button variant="contained" color="primary">{setIcon()}</Button></TableCell>
+                                    <TableCell style={{ width: "25%" }}>즐겨찾기 :
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={async()=>{
+                                                console.log("#!@#!")
+                                                await addFavorite()
+                                                console.log("!@$!@$@!")
+                                            }}>
+                                            {setIcon()}
+                                        </Button>
+                                    </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell colSpan={2}><img src={chart}></img></TableCell>
