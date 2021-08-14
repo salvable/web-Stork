@@ -71,6 +71,19 @@ const Bitcoin = ({match}) => {
     },[]);
 
     useEffect(() => {
+        async function getFavorite(){
+            const response = await axios.get(`http://localhost:3000/favorite/${userId}?favoriteId=${bitCoinId}`,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
+            if(response.data.favorite != null){
+                setIsExistFavorite(true)
+            }
+        }
+        getFavorite()
+    },[bitCoinId]);
+
+    useEffect(() => {
         if (currentSocket) {
             currentSocket.on("connect", () => {
                 currentSocket.emit("join", myInfo);
@@ -106,7 +119,18 @@ const Bitcoin = ({match}) => {
         return <StarBorderIcon/>
     }
 
-    const addFavorite = async() =>{
+    const setFavorite = async() =>{
+        if(isExistFavorite == true){
+            const response = await axios.delete(`http://localhost:3000/favorite/${userId}?favoriteId=${bitCoinId}`,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
+
+            setIsExistFavorite(false)
+            alert("즐겨찾기에서 삭제되었습니다.")
+            return ;
+        }
+
         const response = await axios.post(`http://localhost:3000/favorite/${userId}`,{
             favoriteId: bitCoinId,
             favoriteName: bitCoin.name,
@@ -141,7 +165,7 @@ const Bitcoin = ({match}) => {
                                         variant="contained"
                                         color="primary"
                                         onClick={async()=>{
-                                            await addFavorite()
+                                            await setFavorite()
                                         }}>
                                         {setIcon()}
                                     </Button>

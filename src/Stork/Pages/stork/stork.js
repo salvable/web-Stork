@@ -109,7 +109,18 @@ const Stork = ({match}) => {
         return <StarBorderIcon/>
     }
 
-    const addFavorite = async() =>{
+    const setFavorite = async() =>{
+        if(isExistFavorite == true){
+            const response = await axios.delete(`http://localhost:3000/favorite/${userId}?favoriteId=${storkId}`,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
+
+            setIsExistFavorite(false)
+            alert("즐겨찾기에서 삭제되었습니다.")
+            return ;
+        }
+
         const response = await axios.post(`http://localhost:3000/favorite/${userId}`,{
             favoriteId: storkId,
             favoriteName: storkName,
@@ -119,6 +130,7 @@ const Stork = ({match}) => {
             }})
         setIsExistFavorite(true)
         alert("즐겨찾기에 추가되었습니다.")
+        return ;
     }
 
     return (
@@ -144,9 +156,7 @@ const Stork = ({match}) => {
                                             variant="contained"
                                             color="primary"
                                             onClick={async()=>{
-                                                console.log("#!@#!")
-                                                await addFavorite()
-                                                console.log("!@$!@$@!")
+                                                await setFavorite()
                                             }}>
                                             {setIcon()}
                                         </Button>
