@@ -19,12 +19,18 @@ import ChatInput from "../../component/chat/chatInput";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
 import {useHistory} from "react-router";
+import StarIcon from "@material-ui/icons/Star";
+import StarBorderIcon from "@material-ui/icons/StarBorder";
+import Button from "@material-ui/core/Button";
 
 const Bitcoin = ({match}) => {
 
-    const [bitcoin,setBitcoin] = useState("")
+    const [bitCoin,setBitCoin] = useState("")
+    const [bitCoinId,setBitCoinId] = useState("")
     const [currentSocket, setCurrentSocket] = useState()
+    const [isExistFavorite, setIsExistFavorite] = useState(false)
 
+    const token = localStorage.getItem('accessToken')
     const userId = localStorage.getItem("userId")
     const history = useHistory()
 
@@ -37,11 +43,13 @@ const Bitcoin = ({match}) => {
         async function getBitcoin(){
             if(match.params.bitCoinId == undefined){
                 const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinPrice/KRW-BTC`)
-                setBitcoin(response.data)
+                setBitCoinId("KRW-BTC")
+                setBitCoin(response.data)
             }else{
                 try {
                     const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinPrice/${match.params.bitCoinId}`)
-                    setBitcoin(response.data)
+                    setBitCoinId(match.params.bitCoinId)
+                    setBitCoin(response.data)
                 }catch (e){
                     alert("상장 폐지된 코인입니다!")
                     history.goBack()
@@ -73,7 +81,7 @@ const Bitcoin = ({match}) => {
     }, [currentSocket]);
 
     const setStorkColor = () =>{
-        const str = String(bitcoin.change)
+        const str = String(bitCoin.change)
 
         if(str.indexOf("FALL") != -1){
             return {color: "blue"}
@@ -91,6 +99,25 @@ const Bitcoin = ({match}) => {
         }
     }
 
+    const setIcon = () =>{
+        if(isExistFavorite == true){
+            return <StarIcon/>
+        }
+        return <StarBorderIcon/>
+    }
+
+    const addFavorite = async() =>{
+        const response = await axios.post(`http://localhost:3000/favorite/${userId}`,{
+            favoriteId: bitCoinId,
+            favoriteName: bitCoin.name,
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }})
+        setIsExistFavorite(true)
+        alert("즐겨찾기에 추가되었습니다.")
+    }
+
     return (
         <Grid container spacing={6} style={{height: "100%", marginTop: 1}}>
             <Grid item xs={8}>
@@ -98,18 +125,27 @@ const Bitcoin = ({match}) => {
                     <Table aria-label="simple table" >
                         <TableHead>
                             <TableRow>
-                                <TableCell align="left" colSpan={3}><h1>{bitcoin.name}</h1></TableCell>
+                                <TableCell align="left" colSpan={3}><h1>{bitCoin.name}</h1></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow>
-                                <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{bitcoin.price}</h1><h4>전일대비 {bitcoin.change_price}{setChange(bitcoin.change)}</h4></TableCell>
-                                <TableCell style={{ width: "25%" ,color: "red"}}>고가 {bitcoin.high_price}</TableCell>
-                                <TableCell style={{ width: "25%" }}>거래량</TableCell>
+                                <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{bitCoin.price}</h1><h4>전일대비 {bitCoin.change_price}{setChange(bitCoin.change)}</h4></TableCell>
+                                <TableCell style={{ width: "25%" ,color: "red"}}>고가 {bitCoin.high_price}</TableCell>
+                                <TableCell style={{ width: "25%" }}>거래 : <Button variant="contained" color="primary">매수</Button> <Button variant="contained" color="secondary">매도</Button></TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell style={{ width: "25%" ,color: "blue"}}>저가 {bitcoin.low_price}</TableCell>
-                                <TableCell style={{ width: "25%" }}>거래대금</TableCell>
+                                <TableCell style={{ width: "25%" ,color: "blue"}}>저가 {bitCoin.low_price}</TableCell>
+                                <TableCell style={{ width: "25%" }}>즐겨찾기 :
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={async()=>{
+                                            await addFavorite()
+                                        }}>
+                                        {setIcon()}
+                                    </Button>
+                                </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell colSpan={2}><img src={chart}></img></TableCell>
