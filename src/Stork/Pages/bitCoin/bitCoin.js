@@ -81,7 +81,7 @@ const Bitcoin = ({match}) => {
             }
         }
         getFavorite()
-    },[bitCoinId]);
+    },[]);
 
     useEffect(() => {
         if (currentSocket) {
