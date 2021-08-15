@@ -134,6 +134,7 @@ const Bitcoin = ({match}) => {
         const response = await axios.post(`http://localhost:3000/favorite/${userId}`,{
             favoriteId: bitCoinId,
             favoriteName: bitCoin.name,
+            type: "bitcoin"
         }, {
             headers: {
                 Authorization: `Bearer ${token}`

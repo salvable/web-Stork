@@ -124,6 +124,7 @@ const Stork = ({match}) => {
         const response = await axios.post(`http://localhost:3000/favorite/${userId}`,{
             favoriteId: storkId,
             favoriteName: storkName,
+            type: "stork"
           }, {
             headers: {
                 Authorization: `Bearer ${token}`
