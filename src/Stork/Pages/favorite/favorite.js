@@ -25,8 +25,8 @@ import Button from "@material-ui/core/Button";
 
 const Favorite = ({match}) => {
 
-    const [bitCoin,setBitCoin] = useState("")
-    const [bitCoinId,setBitCoinId] = useState("")
+    const [favorites,setFavorites] = useState([])
+    const [currentFavorite,setCurrentFavorite] = useState(null)
     const [currentSocket, setCurrentSocket] = useState()
     const [isExistFavorite, setIsExistFavorite] = useState(false)
 
@@ -35,39 +35,27 @@ const Favorite = ({match}) => {
     const history = useHistory()
 
     const myInfo = {
-        roomName: match.params.bitCoinId ? match.params.bitCoinId : "KRW-BTC",
+        roomName: match.params.favoriteId ? match.params.favoriteId : favorites[0].favoriteId,
         userName: userId ? userId : "guest",
     };
 
     useEffect(() => {
-        async function getBitcoin(){
-            if(match.params.bitCoinId == undefined){
-                const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinPrice/KRW-BTC`)
-                setBitCoinId("KRW-BTC")
-                setBitCoin(response.data)
-            }else{
-                try {
-                    const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinPrice/${match.params.bitCoinId}`)
-                    setBitCoinId(match.params.bitCoinId)
-                    setBitCoin(response.data)
-                }catch (e){
-                    alert("상장 폐지된 코인입니다!")
-                    history.goBack()
-                }
-            }
+        async function getFavorites() {
+            const response = await axios.get(`http://localhost:3000/favorites/${userId}`,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
+
+            setFavorites(response.data.favorite)
         }
-        getBitcoin()
+        getFavorites()
     }, []);
 
     useEffect(() => {
-        async function getStorkChart(){
-            if(match.params.bitCoinId == undefined){
-                const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinChart/KRW-BTC`)
-            }else{
-                const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinChart/${match.params.bitCoinId}`)
-            }
+        async function getChart(){
+            //Todo 타입에 따라서 요청이 달라야 함 , 생각해야 할 부분
         }
-        getStorkChart()
+        getChart()
     },[]);
 
     useEffect(() => {
@@ -149,17 +137,17 @@ const Favorite = ({match}) => {
                     <Table aria-label="simple table" >
                         <TableHead>
                             <TableRow>
-                                <TableCell align="left" colSpan={3}><h1>{bitCoin.name}</h1></TableCell>
+                                <TableCell align="left" colSpan={3}><h1>{currentFavorite.name}</h1></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow>
-                                <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{bitCoin.price}</h1><h4>전일대비 {bitCoin.change_price}{setChange(bitCoin.change)}</h4></TableCell>
-                                <TableCell style={{ width: "25%" ,color: "red"}}>고가 {bitCoin.high_price}</TableCell>
+                                <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{currentFavorite.price}</h1><h4>전일대비 {currentFavorite.change_price}{setChange(currentFavorite.change)}</h4></TableCell>
+                                <TableCell style={{ width: "25%" ,color: "red"}}>고가 {currentFavorite.high_price}</TableCell>
                                 <TableCell style={{ width: "25%" }}>거래 : <Button variant="contained" color="primary">매수</Button> <Button variant="contained" color="secondary">매도</Button></TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell style={{ width: "25%" ,color: "blue"}}>저가 {bitCoin.low_price}</TableCell>
+                                <TableCell style={{ width: "25%" ,color: "blue"}}>저가 {currentFavorite.low_price}</TableCell>
                                 <TableCell style={{ width: "25%" }}>즐겨찾기 :
                                     <Button
                                         variant="contained"
