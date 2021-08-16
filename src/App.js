@@ -25,7 +25,8 @@ function App() {
               <Route path="/bitCoin/:bitCoinId" component={BitCoin} />
               <Route path="/signUp" component={SignUp} />
               <Route path="/signIn" component={SignIn} />
-              <Route path="/favorite" component={Favorite}/>
+              <Route exact path="/favorite" component={Favorite}/>
+              <Route path="/favorite/:favoriteId" component={Favorite}/>
               <Route path="/contact-us" component={Contact}/>
               <Route path="/profile/:userId" component={Profile}/>
               <Route path="/checkInfo/:userId" component={CheckInfo}/>
