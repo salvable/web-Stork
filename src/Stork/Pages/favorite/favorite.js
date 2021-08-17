@@ -94,7 +94,7 @@ const Favorite = ({match}) => {
     //
 
     useEffect(() => {
-        async function getFavorite(){
+        async function getPrice(){
             if(currentFavorite.type === "stork"){
                 await getStorkPrice()
             }else {
@@ -103,7 +103,7 @@ const Favorite = ({match}) => {
         }
 
         if(currentFavorite){
-            getFavorite()
+            getPrice()
         }
     },[currentFavorite]);
 
@@ -117,6 +117,21 @@ const Favorite = ({match}) => {
         }
         if(currentFavorite) {
             getChart()
+        }
+    },[currentFavorite]);
+
+    useEffect(() => {
+        async function isExistFavorite(){
+            const response = await axios.get(`http://localhost:3000/favorite/${userId}?favoriteId=${currentFavorite.favoriteId}`,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
+            if(response.data.favorite != null){
+                setIsExistFavorite(true)
+            }
+        }
+        if(currentFavorite) {
+            isExistFavorite()
         }
     },[currentFavorite]);
 
@@ -158,7 +173,7 @@ const Favorite = ({match}) => {
 
     const setFavorite = async() =>{
         if(isExistFavorite == true){
-            const response = await axios.delete(`http://localhost:3000/favorite/${userId}?favoriteId=${bitCoinId}`,{
+            const response = await axios.delete(`http://localhost:3000/favorite/${userId}?favoriteId=${currentFavorite.favoriteId}`,{
                 headers: {
                     Authorization: `Bearer ${token}`
                 }})
@@ -169,8 +184,8 @@ const Favorite = ({match}) => {
         }
 
         const response = await axios.post(`http://localhost:3000/favorite/${userId}`,{
-            favoriteId: bitCoinId,
-            favoriteName: bitCoin.name,
+            favoriteId: currentFavorite.favoriteId,
+            favoriteName: currentFavorite.favoriteName,
         }, {
             headers: {
                 Authorization: `Bearer ${token}`
