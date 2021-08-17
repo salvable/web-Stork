@@ -146,7 +146,7 @@ const Stork = ({match}) => {
                             </TableHead>
                             <TableBody>
                                 <TableRow>
-                                    <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{storkPrice.price}</h1><h4>전일대비 {storkPrice.variance}</h4></TableCell>
+                                    <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{storkPrice.price}</h1><h4>전일대비 {storkPrice.variance + storkPrice.variance_sign}</h4></TableCell>
                                     <TableCell style={{ width: "25%" ,color: "red"}}>고가 {storkPrice.highPrice}</TableCell>
                                     <TableCell style={{ width: "25%" }}>거래 : <Button variant="contained" color="primary">매수</Button> <Button variant="contained" color="secondary">매도</Button></TableCell>
                                 </TableRow>

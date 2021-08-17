@@ -155,12 +155,12 @@ const Bitcoin = ({match}) => {
                         </TableHead>
                         <TableBody>
                             <TableRow>
-                                <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{bitCoin.price}</h1><h4>전일대비 {bitCoin.change_price}{setChange(bitCoin.change)}</h4></TableCell>
-                                <TableCell style={{ width: "25%" ,color: "red"}}>고가 {bitCoin.high_price}</TableCell>
+                                <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{bitCoin.price}</h1><h4>전일대비 {bitCoin.variance}{setChange(bitCoin.variance_sign)}</h4></TableCell>
+                                <TableCell style={{ width: "25%" ,color: "red"}}>고가 {bitCoin.highPrice}</TableCell>
                                 <TableCell style={{ width: "25%" }}>거래 : <Button variant="contained" color="primary">매수</Button> <Button variant="contained" color="secondary">매도</Button></TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell style={{ width: "25%" ,color: "blue"}}>저가 {bitCoin.low_price}</TableCell>
+                                <TableCell style={{ width: "25%" ,color: "blue"}}>저가 {bitCoin.lowPrice}</TableCell>
                                 <TableCell style={{ width: "25%" }}>즐겨찾기 :
                                     <Button
                                         variant="contained"
