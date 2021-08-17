@@ -26,7 +26,8 @@ import Button from "@material-ui/core/Button";
 const Favorite = ({match}) => {
 
     const [favorites,setFavorites] = useState([])
-    const [currentFavorite,setCurrentFavorite] = useState(null)
+    const [currentFavorite,setCurrentFavorite] = useState("")
+    const [currentPrice, setCurrentPrice] = useState("null")
     const [currentSocket, setCurrentSocket] = useState()
     const [isExistFavorite, setIsExistFavorite] = useState(false)
 
@@ -35,9 +36,19 @@ const Favorite = ({match}) => {
     const history = useHistory()
 
     const myInfo = {
-        roomName: match.params.favoriteId ? match.params.favoriteId : favorites[0].favoriteId,
+        roomName: match.params.favoriteId ? match.params.favoriteId : "favorite",
         userName: userId ? userId : "guest",
     };
+
+    const getStorkPrice= async() => {
+        const response = await axios.get(`http://localhost:8000/crawling/stork/${currentFavorite.favoriteId}`)
+        setCurrentPrice(response.data)
+    }
+
+    const getCoinPrice= async() => {
+        const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinPrice/${currentFavorite.favoriteId}`)
+        setCurrentPrice(response.data)
+    }
 
     useEffect(() => {
         async function getFavorites() {
@@ -62,14 +73,19 @@ const Favorite = ({match}) => {
             }
         }
         getFavorites()
-    }, []);
+    }, []);console.log(currentFavorite)
+    //
 
     useEffect(() => {
         async function getFavorite(){
-
+            if(currentFavorite.type === "stork"){
+                await getStorkPrice()
+            }else {
+                await getCoinPrice()
+            }
         }
 
-        if(currentFavorite || match.params.favoriteId){
+        if(currentFavorite){
             getFavorite()
         }
     },[currentFavorite]);
@@ -92,21 +108,21 @@ const Favorite = ({match}) => {
     }, [currentSocket]);
 
     const setStorkColor = () =>{
-        const str = String(bitCoin.change)
+        const str = String(currentPrice.variance_sign)
 
-        if(str.indexOf("FALL") != -1){
+        if(str.indexOf("FALL") != -1 || str.indexOf("하락") != -1){
             return {color: "blue"}
         }
         return {color: "red"}
     }
 
     const setChange = (change) =>{
-        if(change == "FALL"){
+        if(change == "FALL" || change == "하락"){
             return " 하락"
         }else if (change == "EVEN"){
             return " 보합"
         }else{
-            return " 상승"
+            return "상승"
         }
     }
 
@@ -118,26 +134,26 @@ const Favorite = ({match}) => {
     }
 
     const setFavorite = async() =>{
-        if(isExistFavorite == true){
-            const response = await axios.delete(`http://localhost:3000/favorite/${userId}?favoriteId=${bitCoinId}`,{
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }})
-
-            setIsExistFavorite(false)
-            alert("즐겨찾기에서 삭제되었습니다.")
-            return ;
-        }
-
-        const response = await axios.post(`http://localhost:3000/favorite/${userId}`,{
-            favoriteId: bitCoinId,
-            favoriteName: bitCoin.name,
-        }, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }})
-        setIsExistFavorite(true)
-        alert("즐겨찾기에 추가되었습니다.")
+        // if(isExistFavorite == true){
+        //     const response = await axios.delete(`http://localhost:3000/favorite/${userId}?favoriteId=${bitCoinId}`,{
+        //         headers: {
+        //             Authorization: `Bearer ${token}`
+        //         }})
+        //
+        //     setIsExistFavorite(false)
+        //     alert("즐겨찾기에서 삭제되었습니다.")
+        //     return ;
+        // }
+        //
+        // const response = await axios.post(`http://localhost:3000/favorite/${userId}`,{
+        //     favoriteId: bitCoinId,
+        //     favoriteName: bitCoin.name,
+        // }, {
+        //     headers: {
+        //         Authorization: `Bearer ${token}`
+        //     }})
+        // setIsExistFavorite(true)
+        // alert("즐겨찾기에 추가되었습니다.")
     }
 
     return (
@@ -147,17 +163,17 @@ const Favorite = ({match}) => {
                     <Table aria-label="simple table" >
                         <TableHead>
                             <TableRow>
-                                <TableCell align="left" colSpan={3}><h1>{currentFavorite.name}</h1></TableCell>
+                                <TableCell align="left" colSpan={3}><h1>{currentFavorite.favoriteName}</h1></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow>
-                                <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{currentFavorite.price}</h1><h4>전일대비 {currentFavorite.change_price}{setChange(currentFavorite.change)}</h4></TableCell>
-                                <TableCell style={{ width: "25%" ,color: "red"}}>고가 {currentFavorite.high_price}</TableCell>
+                                <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{currentPrice.price}</h1><h4>전일대비 {currentPrice.variance}{setChange(currentPrice.variance_sign)}</h4></TableCell>
+                                <TableCell style={{ width: "25%" ,color: "red"}}>고가 {currentPrice.highPrice}</TableCell>
                                 <TableCell style={{ width: "25%" }}>거래 : <Button variant="contained" color="primary">매수</Button> <Button variant="contained" color="secondary">매도</Button></TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell style={{ width: "25%" ,color: "blue"}}>저가 {currentFavorite.low_price}</TableCell>
+                                <TableCell style={{ width: "25%" ,color: "blue"}}>저가 {currentPrice.lowPrice}</TableCell>
                                 <TableCell style={{ width: "25%" }}>즐겨찾기 :
                                     <Button
                                         variant="contained"
