@@ -13,7 +13,8 @@ import {
 } from "@material-ui/core";
 
 import FavoriteTable from "./table/favoriteTable";
-import chart from "../../Chart/coinChart.png";
+import CoinChart from "../../Chart/coinChart.png";
+import StorkChart from "../../Chart/storkChart.png"
 import ChatLog from "../../component/chat/chatLog";
 import ChatInput from "../../component/chat/chatInput";
 import socketIOClient from "socket.io-client";
@@ -48,6 +49,22 @@ const Favorite = ({match}) => {
     const getCoinPrice= async() => {
         const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinPrice/${currentFavorite.favoriteId}`)
         setCurrentPrice(response.data)
+    }
+
+    const getStorkChart= async() => {
+        const response = await axios.get(`http://localhost:8000/crawling/stork/getChart/${currentFavorite.favoriteId}`)
+    }
+
+    const getCoinChart= async() => {
+        const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinChart/${currentFavorite.favoriteId}`)
+    }
+
+    const getChartByType = (type) =>{
+        if(type === "stork"){
+            return StorkChart
+        }else{
+            return CoinChart
+        }
     }
 
     useEffect(() => {
@@ -92,10 +109,16 @@ const Favorite = ({match}) => {
 
     useEffect(() => {
         async function getChart(){
-            //Todo 타입에 따라서 요청이 달라야 함 , 생각해야 할 부분
+            if(currentFavorite.type === "stork"){
+                await getStorkChart()
+            }else {
+                await getCoinChart()
+            }
         }
-        getChart()
-    },[]);
+        if(currentFavorite) {
+            getChart()
+        }
+    },[currentFavorite]);
 
     useEffect(() => {
         if (currentSocket) {
@@ -134,26 +157,26 @@ const Favorite = ({match}) => {
     }
 
     const setFavorite = async() =>{
-        // if(isExistFavorite == true){
-        //     const response = await axios.delete(`http://localhost:3000/favorite/${userId}?favoriteId=${bitCoinId}`,{
-        //         headers: {
-        //             Authorization: `Bearer ${token}`
-        //         }})
-        //
-        //     setIsExistFavorite(false)
-        //     alert("즐겨찾기에서 삭제되었습니다.")
-        //     return ;
-        // }
-        //
-        // const response = await axios.post(`http://localhost:3000/favorite/${userId}`,{
-        //     favoriteId: bitCoinId,
-        //     favoriteName: bitCoin.name,
-        // }, {
-        //     headers: {
-        //         Authorization: `Bearer ${token}`
-        //     }})
-        // setIsExistFavorite(true)
-        // alert("즐겨찾기에 추가되었습니다.")
+        if(isExistFavorite == true){
+            const response = await axios.delete(`http://localhost:3000/favorite/${userId}?favoriteId=${bitCoinId}`,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
+
+            setIsExistFavorite(false)
+            alert("즐겨찾기에서 삭제되었습니다.")
+            return ;
+        }
+
+        const response = await axios.post(`http://localhost:3000/favorite/${userId}`,{
+            favoriteId: bitCoinId,
+            favoriteName: bitCoin.name,
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }})
+        setIsExistFavorite(true)
+        alert("즐겨찾기에 추가되었습니다.")
     }
 
     return (
@@ -186,7 +209,7 @@ const Favorite = ({match}) => {
                                 </TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell colSpan={2}><img src={chart}></img></TableCell>
+                                <TableCell colSpan={2}><img src={getChartByType(currentFavorite.type)}></img></TableCell>
                                 <TableRow>
                                     <TableCell height={600} >
                                         <h3>채팅방</h3>
