@@ -45,30 +45,40 @@ const Favorite = ({match}) => {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }})
+            setFavorites(response.data.favorites)
 
-            setFavorites(response.data.favorite)
+            // params로 값이 없는경우 favorites[0]로 설정
+            if(match.params.favoriteId === undefined && response.data.favorites[0]){
+                setCurrentFavorite(response.data.favorites[0])
+            }
+
+            // params로 값이 있는경우
+            if(match.params.favoriteId){
+                const response = await axios.get(`http://localhost:3000/favorite/${userId}?favoriteId=${match.params.favoriteId}`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }})
+                setCurrentFavorite(response.data.favorite)
+            }
         }
         getFavorites()
     }, []);
+
+    useEffect(() => {
+        async function getFavorite(){
+
+        }
+
+        if(currentFavorite || match.params.favoriteId){
+            getFavorite()
+        }
+    },[currentFavorite]);
 
     useEffect(() => {
         async function getChart(){
             //Todo 타입에 따라서 요청이 달라야 함 , 생각해야 할 부분
         }
         getChart()
-    },[]);
-
-    useEffect(() => {
-        async function getFavorite(){
-            const response = await axios.get(`http://localhost:3000/favorite/${userId}?favoriteId=${bitCoinId}`,{
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }})
-            if(response.data.favorite != null){
-                setIsExistFavorite(true)
-            }
-        }
-        getFavorite()
     },[]);
 
     useEffect(() => {
