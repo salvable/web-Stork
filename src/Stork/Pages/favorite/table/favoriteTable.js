@@ -15,7 +15,7 @@ import Paper from "@material-ui/core/Paper";
 import SearchIcon from "@material-ui/icons/Search";
 import TableScrollbar from "react-table-scrollbar";
 
-const FavoriteTable = ({favorites}) => {
+const FavoriteTable = ({favorites, userId, token}) => {
     const styles = theme => ({
         root: {
             padding: theme.spacing(3),
@@ -35,6 +35,14 @@ const FavoriteTable = ({favorites}) => {
     // 각각 상한가, 하한가, 거래상위, 시가총액 상위를 나타냄, 네이밍은 네이버 주식 url로 결정
     const [favoriteList,setFavoriteList] = useState([])
 
+    const getFavoriteList = async(search) =>{
+        const response = await axios.get(`http://localhost:3000/favorites/getFavoriteList/${userId}?search=${search}`,{
+            headers: {
+                Authorization: `Bearer ${token}`
+            }})
+
+        setFavoriteList(response.data.favorite)
+    }
 
     useEffect(() => {
         setFavoriteList(favorites)
@@ -65,7 +73,7 @@ const FavoriteTable = ({favorites}) => {
                                     }
                                 }}
                                 onChange={async (e)=>{
-                                    // await getCoinList(e.target.value)
+                                    await getFavoriteList(e.target.value)
                                 }}
                             />
                         </TableRow>
