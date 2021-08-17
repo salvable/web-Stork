@@ -15,7 +15,7 @@ import Paper from "@material-ui/core/Paper";
 import SearchIcon from "@material-ui/icons/Search";
 import TableScrollbar from "react-table-scrollbar";
 
-const FavoriteTable = ({userId,token}) => {
+const FavoriteTable = ({favorites}) => {
     const styles = theme => ({
         root: {
             padding: theme.spacing(3),
@@ -37,16 +37,8 @@ const FavoriteTable = ({userId,token}) => {
 
 
     useEffect(() => {
-        async function getFavoriteList(){
-            const response = await axios.get(`http://localhost:3000/favorites/${userId}`,{
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }})
-            setFavoriteList(response.data.favorites)
-        }
-
-        getFavoriteList()
-    },[]);
+        setFavoriteList(favorites)
+    },[favorites]);
 
 
     return (

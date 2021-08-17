@@ -174,7 +174,9 @@ const Favorite = ({match}) => {
                 </TableContainer>
             </Grid>
             <Grid item xs={4}>
-                <FavoriteTable userId={userId} token={token}></FavoriteTable>
+                <FavoriteTable
+                    favorites= {favorites}>
+                </FavoriteTable>
             </Grid>
         </Grid>
     );
