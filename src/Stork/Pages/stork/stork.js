@@ -22,6 +22,7 @@ import StorkTable from "./storkTable/table"
 import Button from "@material-ui/core/Button";
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
+import Loading from "../../component/Loading/loading";
 
 const Stork = ({match}) => {
 
@@ -31,6 +32,7 @@ const Stork = ({match}) => {
     const [storkPrice,setStorkPrice] = useState([])
     const [currentSocket, setCurrentSocket] = useState()
     const [isExistFavorite,setIsExistFavorite] = useState(false)
+    const [loading,setLoading] = useState(false)
 
     const token = localStorage.getItem('accessToken')
     const userId = localStorage.getItem("userId")
@@ -93,6 +95,12 @@ const Stork = ({match}) => {
         getFavorite()
     },[storkId]);
 
+    useEffect(() => {
+        setTimeout(function() {
+            setLoading(true)
+        }, 1500);
+    }, []);
+
     const setStorkColor = () =>{
         const str = String(storkPrice.variance)
 
@@ -134,7 +142,14 @@ const Stork = ({match}) => {
         return ;
     }
 
-    return (
+    if (!loading){
+        return(
+            <Loading></Loading>
+        )
+    }
+
+    else{
+        return (
             <Grid container spacing={6} style={{height: "100%", marginTop: 1}}>
                 <Grid item xs={8}>
                     <TableContainer component={Paper}>
@@ -181,7 +196,8 @@ const Stork = ({match}) => {
                         <StorkTable></StorkTable>
                 </Grid>
         </Grid>
-    );
+        );
+    }
 };
 
 export default Stork

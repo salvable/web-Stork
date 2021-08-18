@@ -23,6 +23,7 @@ import {useHistory} from "react-router";
 import StarIcon from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import Button from "@material-ui/core/Button";
+import Loading from "../../component/Loading/loading";
 
 const Favorite = ({match}) => {
 
@@ -31,6 +32,7 @@ const Favorite = ({match}) => {
     const [currentPrice, setCurrentPrice] = useState("null")
     const [currentSocket, setCurrentSocket] = useState()
     const [isExistFavorite, setIsExistFavorite] = useState(false)
+    const [loading,setLoading] = useState(false)
 
     const token = localStorage.getItem('accessToken')
     const userId = localStorage.getItem("userId")
@@ -145,6 +147,12 @@ const Favorite = ({match}) => {
         }
     }, [currentSocket]);
 
+    useEffect(() => {
+        setTimeout(function() {
+            setLoading(true)
+        }, 1500);
+    }, []);
+
     const setStorkColor = () =>{
         const str = String(currentPrice.variance_sign)
 
@@ -194,58 +202,75 @@ const Favorite = ({match}) => {
         alert("즐겨찾기에 추가되었습니다.")
     }
 
-    return (
-        <Grid container spacing={6} style={{height: "100%", marginTop: 1}}>
-            <Grid item xs={8}>
-                <TableContainer component={Paper}>
-                    <Table aria-label="simple table" >
-                        <TableHead>
-                            <TableRow>
-                                <TableCell align="left" colSpan={3}><h1>{currentFavorite.favoriteName}</h1></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell rowSpan={2} style={{ width: "50%" }}><h1 style={setStorkColor()}>{currentPrice.price}</h1><h4>전일대비 {currentPrice.variance}{setChange(currentPrice.variance_sign)}</h4></TableCell>
-                                <TableCell style={{ width: "25%" ,color: "red"}}>고가 {currentPrice.highPrice}</TableCell>
-                                <TableCell style={{ width: "25%" }}>거래 : <Button variant="contained" color="primary">매수</Button> <Button variant="contained" color="secondary">매도</Button></TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell style={{ width: "25%" ,color: "blue"}}>저가 {currentPrice.lowPrice}</TableCell>
-                                <TableCell style={{ width: "25%" }}>즐겨찾기 :
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={async()=>{
-                                            await setFavorite()
-                                        }}>
-                                        {setIcon()}
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell colSpan={2}><img src={getChartByType(currentFavorite.type)}></img></TableCell>
+    if(!loading){
+        return(
+            <Loading></Loading>
+        )
+    }
+
+    else {
+        return (
+            <Grid container spacing={6} style={{height: "100%", marginTop: 1}}>
+                <Grid item xs={8}>
+                    <TableContainer component={Paper}>
+                        <Table aria-label="simple table">
+                            <TableHead>
                                 <TableRow>
-                                    <TableCell height={600} >
-                                        <h3>채팅방</h3>
-                                        <ChatLog socket={currentSocket}></ChatLog>
-                                        <ChatInput userId={userId} socket={currentSocket}></ChatInput>
+                                    <TableCell align="left" colSpan={3}><h1>{currentFavorite.favoriteName}</h1>
                                     </TableCell>
                                 </TableRow>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell rowSpan={2} style={{width: "50%"}}><h1
+                                        style={setStorkColor()}>{currentPrice.price}</h1>
+                                        <h4>전일대비 {currentPrice.variance}{setChange(currentPrice.variance_sign)}</h4>
+                                    </TableCell>
+                                    <TableCell
+                                        style={{width: "25%", color: "red"}}>고가 {currentPrice.highPrice}</TableCell>
+                                    <TableCell style={{width: "25%"}}>거래 : <Button variant="contained"
+                                                                                   color="primary">매수</Button> <Button
+                                        variant="contained" color="secondary">매도</Button></TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell
+                                        style={{width: "25%", color: "blue"}}>저가 {currentPrice.lowPrice}</TableCell>
+                                    <TableCell style={{width: "25%"}}>즐겨찾기 :
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={async () => {
+                                                await setFavorite()
+                                            }}>
+                                            {setIcon()}
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell colSpan={2}><img
+                                        src={getChartByType(currentFavorite.type)}></img></TableCell>
+                                    <TableRow>
+                                        <TableCell height={600}>
+                                            <h3>채팅방</h3>
+                                            <ChatLog socket={currentSocket}></ChatLog>
+                                            <ChatInput userId={userId} socket={currentSocket}></ChatInput>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>
+                <Grid item xs={4}>
+                    <FavoriteTable
+                        favorites={favorites}
+                        userId={userId}
+                        token={token}>
+                    </FavoriteTable>
+                </Grid>
             </Grid>
-            <Grid item xs={4}>
-                <FavoriteTable
-                    favorites= {favorites}
-                    userId = {userId}
-                    token = {token}>
-                </FavoriteTable>
-            </Grid>
-        </Grid>
-    );
+        );
+    }
 };
 
 export default Favorite

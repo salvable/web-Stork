@@ -1,8 +1,8 @@
 import React from 'react';
 import PetsIcon from '@material-ui/icons/Pets';
-const Loding = (props) => {
+const Loading = (props) => {
     return(
-        <h1>Loding...</h1>
+        <h1>Loading...</h1>
     );
 }
-export default Loding;
+export default Loading;
