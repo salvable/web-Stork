@@ -84,15 +84,20 @@ const Favorite = ({match}) => {
 
             // params로 값이 있는경우
             if(match.params.favoriteId){
-                const response = await axios.get(`http://localhost:3000/favorite/${userId}?favoriteId=${match.params.favoriteId}`,{
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }})
-                setCurrentFavorite(response.data.favorite)
+                try{
+                    const response = await axios.get(`http://localhost:3000/favorite/${userId}?favoriteId=${match.params.favoriteId}`,{
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }})
+                    setCurrentFavorite(response.data.favorite)
+                }catch (e){
+                    alert("접근권한이 없습니다.")
+                    history.goBack()
+                }
             }
         }
         getFavorites()
-    }, []);console.log(currentFavorite)
+    }, []);
     //
 
     useEffect(() => {
