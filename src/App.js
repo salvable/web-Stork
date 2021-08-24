@@ -12,6 +12,7 @@ import Contact from "./Stork/Pages/contact-us/contact-us"
 import Profile from "./Stork/Pages/profile/profile"
 import CheckInfo from "./Stork/Pages/profile/checkInfo";
 import ModifyInfo from "./Stork/Pages/profile/modifyInfo";
+import BoardWrite from "./Stork/Pages/contact-us/board/board_write"
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
               <Route path="/profile/:userId" component={Profile}/>
               <Route path="/checkInfo/:userId" component={CheckInfo}/>
               <Route path="/modify/:userId" component={ModifyInfo}/>
+              <Route path="/board/write" component={BoardWrite}/>
           </Switch>
       </Router>
   );
