@@ -12,6 +12,22 @@ const BoardWrite = () => {
     const [name,setName] = useState("")
     const [id, setId] = useState("")
     const [password, setPassword] = useState("")
+    const [text, setText] = useState("")
+    const [isCheck, setIsCheck] = useState(false)
+
+    const isDisabled = () => {
+        if(isCheck){
+            return true
+        }
+        return false
+    }
+
+    const setVariant = () =>{
+        if(isCheck){
+            return "filled"
+        }
+        return "outlined"
+    }
 
     return (
         <Grid container spacing={6} style={{marginTop: 1, display: 'flex'}}>
@@ -44,15 +60,17 @@ const BoardWrite = () => {
                                 </TableCell>
                                 <TableCell style={{width: "20%"}}>
                                     <TextField
-                                        variant="outlined"
+                                        variant={setVariant()}
                                         margin="normal"
                                         required
                                         fullWidth
                                         name="ID"
                                         label="ID"
                                         placeholder="ID"
+                                        disabled = {isDisabled()}
                                         type="ID"
                                         id="ID"
+                                        color = "primary"
                                         value={id}
                                         autoComplete="current-password"
                                         onChange={(e)=>{
@@ -80,12 +98,29 @@ const BoardWrite = () => {
                                 </TableCell>
                                 <TableCell style={{width: "10%"}}>
                                     익명
-                                    <Checkbox/>
+                                    <Checkbox
+                                        checked	={isCheck}
+                                        onClick={(e)=>{
+                                            if(isCheck){
+                                                setIsCheck(false)
+                                            }else{
+                                                setIsCheck(true)
+                                            }
+
+                                        }}
+                                    />
                                 </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell colSpan={4}>
-                                    <TextareaAutosize minRows = "25" style={{width: "100%"}}></TextareaAutosize>
+                                    <TextareaAutosize
+                                        minRows = "25"
+                                        style={{width: "100%"}}
+                                        value={text}
+                                        onChange={(e)=> {
+                                            setText(e.target.value)
+                                        }}>
+                                    </TextareaAutosize>
                                 </TableCell>
                             </TableRow>
                             <TableRow>
