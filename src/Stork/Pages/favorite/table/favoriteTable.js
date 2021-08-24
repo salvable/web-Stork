@@ -92,7 +92,7 @@ const FavoriteTable = ({favorites, userId, token}) => {
                         <TableBody>
 
                             {favoriteList.map((row) => (
-                                <TableRow onClick={() => {
+                                <TableRow hover={true} onClick={() => {
                                     window.location.href = "/favorite/" + row.favoriteId
                                 }}>
                                     <TableCell align="center">{row.favoriteId}</TableCell>

@@ -93,7 +93,7 @@ const BitCoinTable = () => {
                         <TableBody>
 
                             {coinList.map((row) => (
-                                <TableRow onClick={() => {
+                                <TableRow hover={true} onClick={() => {
                                     window.location.href = "/bitCoin/" + row.market
                                 }}>
                                     <TableCell align="center">{row.market}</TableCell>
