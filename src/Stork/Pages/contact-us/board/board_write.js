@@ -6,8 +6,9 @@ import Grid from '@material-ui/core/Grid';
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import Contact from "../contact-us";
 
-export default function BoardWrite() {
+const BoardWrite = () => {
     const [name,setName] = useState("")
     const [id, setId] = useState("")
     const [password, setPassword] = useState("")
@@ -101,3 +102,5 @@ export default function BoardWrite() {
         </Grid>
     );
 }
+
+export default BoardWrite
