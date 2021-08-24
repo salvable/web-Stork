@@ -3,10 +3,10 @@ import Grid from "@material-ui/core/Grid";
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper"
 import Button from "@material-ui/core/Button";
-import chart from "../../Chart/storkChart.png";
 import ChatLog from "../../component/chat/chatLog";
 import BorderChatInput from "../../component/chat/borderChatInput";
 import socketIOClient from "socket.io-client";
+import axios from "axios";
 
 const Contact = () => {
 
@@ -29,6 +29,19 @@ const Contact = () => {
             setCurrentSocket(socketIOClient("localhost:3002"));
         }
     }, [currentSocket]);
+
+    const loginCheck = async(accessToken) => {
+        if(accessToken){
+            const response = await axios.get("http://localhost:3000/checkAuth", {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }})
+
+            if(response.status == 200){
+                window.location.href = "/board/write"
+            }
+        }
+    }
 
     return (
         <Grid container spacing={6} style={{height: "100%", marginTop: 1}}>
@@ -56,6 +69,15 @@ const Contact = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={async ()=>{
+                        await loginCheck(token)
+                    }}
+                >
+                    글 작성
+                </Button>
             </Grid>
             <Grid item xs={4}>
                 <TableContainer component={Paper}>
@@ -75,9 +97,6 @@ const Contact = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-            </Grid>
-            <Grid item xs={8} style={{justifyContent: 'center'}}>
-                <Button variant="contained" color="primary" style={{justifyContent: 'center'}}> 글 작성</Button>
             </Grid>
         </Grid>
     )
