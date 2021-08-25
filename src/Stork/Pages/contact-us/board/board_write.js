@@ -7,6 +7,8 @@ import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "
 import Paper from "@material-ui/core/Paper";
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Contact from "../contact-us";
+import axios from "axios";
+import {useHistory} from "react-router";
 
 const BoardWrite = () => {
     const [name,setName] = useState("")
@@ -14,6 +16,29 @@ const BoardWrite = () => {
     const [password, setPassword] = useState("")
     const [text, setText] = useState("")
     const [isCheck, setIsCheck] = useState(false)
+    const [file,setFile] = useState(null)
+
+    const history = useHistory()
+    const token = localStorage.getItem('accessToken')
+
+    const addBoard = async () =>{
+        try{
+            const response = await axios.post("http://localhost:3000/board", {
+                userId: name,
+                content: text,
+                writer: isCheck ? id : "익명",
+                password: password,
+            },{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
+
+            alert("게시글이 추가되었습니다.")
+        }catch (e){
+            alert("올바르지 않은 접근입니다.")
+        }
+
+    }
 
     const isDisabled = () => {
         if(isCheck){
@@ -27,6 +52,16 @@ const BoardWrite = () => {
             return "filled"
         }
         return "outlined"
+    }
+
+    const fileChange = (e) =>{
+        setFile(e.target.files[0])
+    }
+
+    const cancel = () =>{
+        if(window.confirm("입력을 취소하고 이전페이지로 돌아가시겠습니까?")) {
+           history.goBack()
+        }
     }
 
     return (
@@ -124,10 +159,29 @@ const BoardWrite = () => {
                                 </TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell colSpan={2}></TableCell>
+                                <TableCell colSpan={2}>
+                                    <input
+                                        type="file"
+                                        multiple onChange={(e)=>{
+                                        fileChange(e)
+                                        }}
+                                    />
+                                </TableCell>
                                 <TableCell colSpan={2} align="right">
-                                    <Button variant="contained" color="secondary">취소</Button>
-                                    <Button variant="contained" color="primary">글작성</Button>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={()=>{
+                                            cancel()
+                                        }}>취소</Button>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={async()=>{
+                                            await addBoard()
+                                        }}>
+                                        글작성
+                                    </Button>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
