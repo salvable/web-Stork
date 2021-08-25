@@ -9,8 +9,8 @@ import socketIOClient from "socket.io-client";
 import axios from "axios";
 
 const Contact = () => {
-
     const [currentSocket, setCurrentSocket] = useState()
+    const [boards,setBoards] = useState([])
 
     const token = localStorage.getItem('accessToken')
     const userId = localStorage.getItem("userId")
@@ -30,16 +30,34 @@ const Contact = () => {
         }
     }, [currentSocket]);
 
+    useEffect(() => {
+        async function getBoards(){
+            const response = await axios.get(`http://localhost:3000/boards?page=1`,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
+            setBoards(response.data.board)
+        }
+        getBoards()
+    }, []);
+
     const loginCheck = async(accessToken) => {
         if(accessToken){
-            const response = await axios.get("http://localhost:3000/checkAuth", {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }})
+            try{
+                const response = await axios.get("http://localhost:3000/checkAuth", {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }})
 
-            if(response.status == 200){
-                window.location.href = "/board/write"
+                if(response.status == 200){
+                    window.location.href = "/board/write"
+                }
+            } catch (e) {
+                alert("로그인 후 이용 가능합니다.")
             }
+        }
+        else{
+            alert("로그인 후 이용 가능합니다.")
         }
     }
 
@@ -55,17 +73,26 @@ const Contact = () => {
                         </TableHead>
                         <TableBody>
                             <TableRow>
-                                <TableCell style={{width: "10%"}}>글 번호</TableCell>
-                                <TableCell style={{width: "50%"}}>제목</TableCell>
-                                <TableCell style={{width: "10%"}}>작성자</TableCell>
-                                <TableCell style={{width: "10%"}}>날짜</TableCell>
-                                <TableCell style={{width: "10%"}}>조회수</TableCell>
-                                <TableCell style={{width: "10%"}}>추천수</TableCell>
+                                <TableCell align="center" style={{width: "10%"}}>글 번호</TableCell>
+                                <TableCell align="center" style={{width: "50%"}}>제목</TableCell>
+                                <TableCell align="center" style={{width: "10%"}}>작성자</TableCell>
+                                <TableCell align="center" style={{width: "10%"}}>날짜</TableCell>
+                                <TableCell align="center" style={{width: "10%"}}>조회수</TableCell>
+                                <TableCell align="center" style={{width: "10%"}}>추천수</TableCell>
                             </TableRow>
 
-                            <TableRow>
-                                가져온 데이터를 뿌릴 예정
-                            </TableRow>
+                            {boards.map((row) => (
+                                <TableRow hover={true} onClick={() => {
+                                    window.location.href = "/favorite/" + row.favoriteId
+                                }}>
+                                    <TableCell align="center">{row.boardId}</TableCell>
+                                    <TableCell align="center">{row.name}</TableCell>
+                                    <TableCell align="center">{row.writer}</TableCell>
+                                    <TableCell align="center">{}</TableCell>
+                                    <TableCell align="center">{row.hit}</TableCell>
+                                    <TableCell align="center">{row.star}</TableCell>
+                                </TableRow>
+                            ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
