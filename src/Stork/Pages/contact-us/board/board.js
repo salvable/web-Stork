@@ -6,6 +6,7 @@ import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} f
 import Paper from "@material-ui/core/Paper";
 import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAlt';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import Button from "@material-ui/core/Button";
 
 const Board = ({match}) => {
 
@@ -30,6 +31,28 @@ const Board = ({match}) => {
         if(board.createdAt){
             const data = date.split("T")[0]
             return data
+        }
+    }
+
+    const updateStar = async(starType) =>{
+        const response = await axios.put(`http://localhost:3000/board/${match.params.boardId}/star`,{
+            type: starType
+        },{
+            headers: {
+                Authorization: `Bearer ${token}`
+            }})
+        setBoard(response.data.board)
+    }
+
+    const checkAuth = async() =>{
+        try{
+            const response = await axios.get("http://localhost:3000/checkAuth",{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
+            return true
+        }catch (e) {
+            return false
         }
     }
 
@@ -64,10 +87,34 @@ const Board = ({match}) => {
                             <TableRow>
                                 <TableCell colSpan={3}>
                                     <Box my={2} display="flex" justifyContent="center">
-                                        <h2>{board.star}</h2>
-                                        <SentimentSatisfiedAltIcon color="primary" fontSize="large"/>
-                                        <SentimentVeryDissatisfiedIcon color="secondary" fontSize="large"/>
-                                        <h2>{board.unStar}</h2>
+                                        <h1>{board.star}</h1>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={async (e)=>{
+                                                const isLogin = await checkAuth()
+                                                if(!isLogin){
+                                                    alert("로그인 후 추천 기능을 이용할 수 있습니다.")
+                                                    return ;
+                                                }
+                                                await updateStar("star")
+                                            }}>
+                                            <SentimentSatisfiedAltIcon fontSize="large"/>
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            onClick={async (e)=>{
+                                                const isLogin = await checkAuth()
+                                                if(!isLogin){
+                                                    alert("로그인 후 추천 기능을 이용할 수 있습니다.")
+                                                    return ;
+                                                }
+                                                await updateStar("unStar")
+                                            }}>
+                                            <SentimentVeryDissatisfiedIcon fontSize="large"/>
+                                        </Button>
+                                        <h1>{board.unStar}</h1>
                                     </Box>
 
                                 </TableCell>
