@@ -110,7 +110,7 @@ const Contact = ({location}) => {
 
                             {boards.map((row) => (
                                 <TableRow hover={true} onClick={() => {
-                                    window.location.href = "/favorite/" + row.favoriteId
+                                    window.location.href = "/board/" + row.boardId
                                 }}>
                                     <TableCell align="center">{row.boardId}</TableCell>
                                     <TableCell align="center">{row.name}</TableCell>
