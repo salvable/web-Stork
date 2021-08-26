@@ -26,7 +26,7 @@ const BoardWrite = () => {
             const response = await axios.post("http://localhost:3000/board", {
                 userId: name,
                 content: text,
-                writer: isCheck ? id : "익명",
+                writer: isCheck ? "익명" : id,
                 password: password,
             },{
                 headers: {
@@ -34,6 +34,7 @@ const BoardWrite = () => {
                 }})
 
             alert("게시글이 추가되었습니다.")
+            history.replace("/board/" + response.data.board.boardId)
         }catch (e){
             alert("올바르지 않은 접근입니다.")
         }
