@@ -126,9 +126,7 @@ const Contact = ({location}) => {
                                         <Pagination
                                             count={setPageCount()}
                                             color="primary"
-                                            selected={false}
                                             defaultPage={page}
-                                            page={page}
                                             onChange={(e,page)=>{
                                                 history.push(`/contact-us?page=${page}`)
                                                 setPage(page)

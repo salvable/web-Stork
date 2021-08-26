@@ -62,6 +62,9 @@ const Favorite = ({match}) => {
     }
 
     const getChartByType = (type) =>{
+        if(!currentFavorite){
+            return ;
+        }
         if(type === "stork"){
             return StorkChart
         }else{
