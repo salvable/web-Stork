@@ -9,8 +9,8 @@ import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissa
 import Button from "@material-ui/core/Button";
 
 const Board = ({match}) => {
-
-    const [board,setBoard] = useState("")
+    // split을 사용하기 위한 초기값 설정
+    const [board,setBoard] = useState({content: ""})
 
     const history = useHistory()
     const token = localStorage.getItem('accessToken')
@@ -80,7 +80,16 @@ const Board = ({match}) => {
                             <TableRow>
                                 <TableCell colSpan={3}>
                                     <div>
-                                        {board.content}
+                                        {
+                                            board.content.split("\n").map((line) => {
+                                                return (
+                                                    <span>
+                                                        {line}
+                                                        <br />
+                                                    </span>
+                                                );
+                                            })
+                                        }
                                     </div>
                                 </TableCell>
                             </TableRow>
