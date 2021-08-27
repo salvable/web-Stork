@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
     "express-session": "^1.17.2",
+    "html-react-parser": "^1.2.8",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "query-string": "^7.0.1",
