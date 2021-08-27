@@ -14,6 +14,7 @@ const Board = ({match}) => {
 
     const history = useHistory()
     const token = localStorage.getItem('accessToken')
+    const userId = localStorage.getItem('userId')
 
     useEffect(() => {
         async function getBoard(){
@@ -35,13 +36,19 @@ const Board = ({match}) => {
     }
 
     const updateStar = async(starType) =>{
-        const response = await axios.put(`http://localhost:3000/board/${match.params.boardId}/star`,{
-            type: starType
-        },{
-            headers: {
-                Authorization: `Bearer ${token}`
-            }})
-        setBoard(response.data.board)
+        try {
+            const response = await axios.put(`http://localhost:3000/board/${match.params.boardId}/star`,{
+                type: starType,
+                userId: userId
+            },{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
+            setBoard(response.data.board)
+        }catch (e) {
+            alert("이미 추천 또는 비추천 한 게시글입니다.")
+        }
+
     }
 
     const checkAuth = async() =>{
