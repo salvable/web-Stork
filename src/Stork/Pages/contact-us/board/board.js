@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useHistory} from "react-router";
 import axios from "axios";
 import Grid from "@material-ui/core/Grid";
-import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAlt';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 const Board = ({match}) => {
     // split을 사용하기 위한 초기값 설정
     const [board,setBoard] = useState({content: ""})
+    const [password,setPassword] = useState("")
 
     const history = useHistory()
     const token = localStorage.getItem('accessToken')
@@ -138,6 +139,50 @@ const Board = ({match}) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Box my={2} display="flex" justifyContent="flex-end">
+                    <TextField
+                        margin="normal"
+                        required
+                        name="password"
+                        placeholder="password"
+                        type="password"
+                        id="password"
+                        value={password}
+                        autoComplete="current-password"
+                        size="small"
+                        onChange={(e)=>{
+                            setPassword(e.target.value)
+                        }}
+                    />
+                    &nbsp;
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={async (e)=>{
+                            const isLogin = await checkAuth()
+                            if(!isLogin){
+                                alert("로그인 후 추천 기능을 이용할 수 있습니다.")
+                                return ;
+                            }
+                            await updateStar("star")
+                        }}>
+                        글수정
+                    </Button>
+                    &nbsp;
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={async (e)=>{
+                            const isLogin = await checkAuth()
+                            if(!isLogin){
+                                alert("로그인 후 추천 기능을 이용할 수 있습니다.")
+                                return ;
+                            }
+                            await updateStar("unStar")
+                        }}>
+                        글삭제
+                    </Button>
+                </Box>
             </Grid>
         </Grid>
     );
