@@ -64,6 +64,15 @@ const Board = ({match}) => {
         }
     }
 
+    const deleteBoard = async() =>{
+        try{
+            const response = await axios.delete(`http://localhost:3000/board/${board.boardId}?password=${password}`)
+            alert("!!!!!!!!!!!!!")
+        }catch (e) {
+            alert("비밀번호가 틀렸습니다.")
+        }
+    }
+
     return (
         <Grid container spacing={6} style={{marginTop: 1, display: 'flex'}}>
             <Grid item xs={8} >
@@ -173,12 +182,7 @@ const Board = ({match}) => {
                         variant="contained"
                         color="secondary"
                         onClick={async (e)=>{
-                            const isLogin = await checkAuth()
-                            if(!isLogin){
-                                alert("로그인 후 추천 기능을 이용할 수 있습니다.")
-                                return ;
-                            }
-                            await updateStar("unStar")
+                            await deleteBoard()
                         }}>
                         글삭제
                     </Button>
