@@ -67,7 +67,20 @@ const Board = ({match}) => {
     const deleteBoard = async() =>{
         try{
             const response = await axios.delete(`http://localhost:3000/board/${board.boardId}?password=${password}`)
-            alert("!!!!!!!!!!!!!")
+            alert("글 삭제가 완료되었습니다.")
+            history.push("/contact-us")
+        }catch (e) {
+            alert("비밀번호가 틀렸습니다.")
+        }
+    }
+
+    const checkPassword = async() =>{
+        try{
+            const response = await axios.get(`http://localhost:3000/board/${board.boardId}/checkPw?password=${password}`)
+            if(response.data.result == true){
+                window.location.href = "/boardUpdate/" + board.boardId
+            }
+
         }catch (e) {
             alert("비밀번호가 틀렸습니다.")
         }
@@ -168,12 +181,7 @@ const Board = ({match}) => {
                         variant="contained"
                         color="primary"
                         onClick={async (e)=>{
-                            const isLogin = await checkAuth()
-                            if(!isLogin){
-                                alert("로그인 후 추천 기능을 이용할 수 있습니다.")
-                                return ;
-                            }
-                            await updateStar("star")
+                            await checkPassword()
                         }}>
                         글수정
                     </Button>
