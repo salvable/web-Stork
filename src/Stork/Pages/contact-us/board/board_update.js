@@ -35,6 +35,26 @@ const BoardUpdate = ({match}) => {
         getBoard()
     }, []);
 
+    const updateBoard = async () =>{
+        try{
+            const response = await axios.put(`http://localhost:3000/board/${match.params.boardId}`,{
+                name: name,
+                content: content,
+                password : password
+            },{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
+
+            alert("수정되었습니다.")
+            history.replace("/board/" + match.params.boardId)
+        }catch (e) {
+            alert("입력한 정보를 확인해 주십시오")
+        }
+
+
+    }
+
     const fileChange = (e) =>{
         setFile(e.target.files[0])
     }
@@ -140,7 +160,7 @@ const BoardUpdate = ({match}) => {
                                         variant="contained"
                                         color="primary"
                                         onClick={async()=>{
-
+                                            await updateBoard()
                                         }}>
                                         글수정
                                     </Button>
