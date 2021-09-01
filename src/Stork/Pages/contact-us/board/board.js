@@ -7,6 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAlt';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import Button from "@material-ui/core/Button";
+import Comment from "./comment";
 
 const Board = ({match}) => {
     // split을 사용하기 위한 초기값 설정
@@ -140,6 +141,7 @@ const Board = ({match}) => {
                                             }}>
                                             <SentimentSatisfiedAltIcon fontSize="large"/>
                                         </Button>
+                                        &nbsp;
                                         <Button
                                             variant="contained"
                                             color="secondary"
@@ -195,6 +197,9 @@ const Board = ({match}) => {
                         글삭제
                     </Button>
                 </Box>
+            </Grid>
+            <Grid item xs={4} >
+                <Comment></Comment>
             </Grid>
         </Grid>
     );
