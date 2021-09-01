@@ -175,6 +175,7 @@ const BoardWrite = () => {
                                         onClick={()=>{
                                             cancel()
                                         }}>취소</Button>
+                                    &nbsp;
                                     <Button
                                         variant="contained"
                                         color="primary"
