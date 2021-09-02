@@ -18,12 +18,13 @@ import TableScrollbar from "react-table-scrollbar";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 
-const Comment = ({boardId}) => {
+const Comment = ({boardId,token}) => {
 
     const [id,setId] = useState("")
     const [password,setPassword] = useState("")
     const [isCheck, setIsCheck] = useState(false)
     const [comment, setComment] = useState("")
+    const [comments, setComments] = useState([])
 
     const styles = theme => ({
         root: {
@@ -41,7 +42,18 @@ const Comment = ({boardId}) => {
             minWidth: 650,
         }
     });
-    // 각각 상한가, 하한가, 거래상위, 시가총액 상위를 나타냄, 네이밍은 네이버 주식 url로 결정
+
+    useEffect(() => {
+        async function getComment(){
+            const response = await axios.get(`http://localhost:3000/board/${boardId}/comment`,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
+            setComments(response.data.comment)
+        }
+        getComment()
+    }, []);
+
 
     return (
         <Grid container spacing={6} style={{height: "50%", marginTop: 1}}>
@@ -65,7 +77,13 @@ const Comment = ({boardId}) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-
+                            {comments.map((row) => (
+                                <TableRow hover={true}>
+                                    <TableCell align="center">{row.userId}</TableCell>
+                                    <TableCell align="center">{row.content}</TableCell>
+                                    <TableCell align="center">X</TableCell>
+                                </TableRow>
+                            ))}
                         </TableBody>
                     </Table>
                 </TableScrollbar>

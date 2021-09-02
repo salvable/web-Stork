@@ -199,7 +199,10 @@ const Board = ({match}) => {
                 </Box>
             </Grid>
             <Grid item xs={4} >
-                <Comment></Comment>
+                <Comment
+                    boardId = {match.params.boardId}
+                    token={token}
+               />
             </Grid>
         </Grid>
     );
