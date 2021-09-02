@@ -16,12 +16,14 @@ import Paper from "@material-ui/core/Paper";
 import SearchIcon from "@material-ui/icons/Search";
 import TableScrollbar from "react-table-scrollbar";
 import Checkbox from "@material-ui/core/Checkbox";
+import Button from "@material-ui/core/Button";
 
 const Comment = ({boardId}) => {
 
     const [id,setId] = useState("")
     const [password,setPassword] = useState("")
     const [isCheck, setIsCheck] = useState(false)
+    const [comment, setComment] = useState("")
 
     const styles = theme => ({
         root: {
@@ -53,12 +55,13 @@ const Comment = ({boardId}) => {
                 </Table>
             </TableContainer>
             <TableContainer component={Paper}>
-                <TableScrollbar rows={25}>
+                <TableScrollbar rows={20}>
                     <Table className={styles.table} aria-label="simple table" stickyHeader>
                         <TableHead>
                             <TableRow>
-                                <TableCell align="center">종목 코드</TableCell>
-                                <TableCell align="center">코인 이름</TableCell>
+                                <TableCell align="center" style={{width: "20%"}}>ID</TableCell>
+                                <TableCell align="center" style={{width: "60%"}}>Content</TableCell>
+                                <TableCell align="center" style={{width: "20%"}}>X</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -71,7 +74,7 @@ const Comment = ({boardId}) => {
                     <Table className={styles.table} aria-label="simple table">
                         <TableBody>
                             <TableRow>
-                                <TableCell style={{width: "25%"}}>
+                                <TableCell style={{width: "30%"}}>
                                     <TextField
                                         variant="outlined"
                                         margin="normal"
@@ -90,7 +93,7 @@ const Comment = ({boardId}) => {
                                         }}
                                     />
                                 </TableCell>
-                                <TableCell style={{width: "25%"}}>
+                                <TableCell style={{width: "30%"}}>
                                     <TextField
                                         variant="outlined"
                                         margin="normal"
@@ -109,7 +112,7 @@ const Comment = ({boardId}) => {
                                         }}
                                     />
                                 </TableCell>
-                                <TableCell style={{width: "50%"}}>
+                                <TableCell style={{width: "40%"}}>
                                     익명
                                     <Checkbox
                                         checked	={isCheck}
@@ -122,6 +125,38 @@ const Comment = ({boardId}) => {
 
                                         }}
                                     />
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell colSpan={2} style={{width: "70%"}}>
+                                    <TextField
+                                        variant="outlined"
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        name="comment"
+                                        label="comment"
+                                        placeholder="comment"
+                                        type="comment"
+                                        id="comment"
+                                        color = "primary"
+                                        value={comment}
+
+                                        onChange={(e)=>{
+                                            setComment(e.target.value)
+                                        }}
+                                    />
+                                </TableCell>
+                                <TableCell style={{width: "30%"}}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        size="large"
+                                        onClick={async()=>{
+
+                                        }}>
+                                        글작성
+                                    </Button>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
