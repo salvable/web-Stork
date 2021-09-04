@@ -43,17 +43,33 @@ const Comment = ({boardId,token}) => {
         }
     });
 
-    useEffect(() => {
-        async function getComment(){
-            const response = await axios.get(`http://localhost:3000/board/${boardId}/comment`,{
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }})
-            setComments(response.data.comment)
-        }
-        getComment()
-    }, []);
+    const getComment = async () =>{
+        const response = await axios.get(`http://localhost:3000/board/${boardId}/comment`,{
+            headers: {
+                Authorization: `Bearer ${token}`
+            }})
+        setComments(response.data.comment)
+    }
 
+    const addComment = async() =>{
+        const response = await axios.post(`http://localhost:3000/board/${boardId}/comment`,{
+            boardId: boardId,
+            content: comment,
+            userId: isCheck ? "익명" : id,
+            password: password,
+        },{
+            headers: {
+                Authorization: `Bearer ${token}`
+            }})
+        alert("작성되었습니다.")
+
+        await getComment()
+        return true
+    }
+
+    useEffect(async() => {
+        await getComment()
+    }, [comment]);
 
     return (
         <Grid container spacing={6} style={{height: "50%", marginTop: 1}}>
@@ -104,6 +120,7 @@ const Comment = ({boardId,token}) => {
                                         type="ID"
                                         id="ID"
                                         color = "primary"
+                                        size="small"
                                         value={id}
                                         autoComplete="current-password"
                                         onChange={(e)=>{
@@ -123,6 +140,7 @@ const Comment = ({boardId,token}) => {
                                         type="password"
                                         id="password"
                                         color = "primary"
+                                        size="small"
                                         value={password}
                                         autoComplete="current-password"
                                         onChange={(e)=>{
@@ -158,6 +176,7 @@ const Comment = ({boardId,token}) => {
                                         type="comment"
                                         id="comment"
                                         color = "primary"
+                                        size="small"
                                         value={comment}
 
                                         onChange={(e)=>{
@@ -169,11 +188,20 @@ const Comment = ({boardId,token}) => {
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        size="large"
+                                        size="medium"
                                         onClick={async()=>{
-
+                                            const response = await addComment()
+                                            if (response){
+                                                setId("")
+                                                setPassword("")
+                                                setIsCheck(false)
+                                                setComment("")
+                                                setComments([])
+                                            }else{
+                                                alert("입력값을 확인해주세요")
+                                            }
                                         }}>
-                                        글작성
+                                        댓글작성
                                     </Button>
                                 </TableCell>
                             </TableRow>
