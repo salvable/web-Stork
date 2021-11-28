@@ -13,7 +13,7 @@ const Navbar = () => {
     const [userId, setUserId] = useState("")
 
     const getUserId = async(userId,token) => {
-        const user = await axios.get(`http://localhost:3000/getUser/${userId}`,{
+        const user = await axios.get(`http://localhost:3000/user/${userId}`,{
             headers: {
                 Authorization: `Bearer ${token}`
             }})

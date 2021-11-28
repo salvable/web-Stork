@@ -46,7 +46,7 @@ const ModifyInfo = ({match}) => {
     useEffect(()=>{
         async function getUserInfo(){
             try {
-                const response = await axios.get(`http://localhost:3000/getUser/${userId}`,{
+                const response = await axios.get(`http://localhost:3000/user/${userId}`,{
                     headers: {
                         Authorization: `Bearer ${token}`
                     }})
@@ -84,7 +84,7 @@ const ModifyInfo = ({match}) => {
 
     const deleteUser = async() =>{
         try{
-            const response = await axios.delete(`http://localhost:3000/deleteUser/${userId}`,{
+            const response = await axios.delete(`http://localhost:3000/user/${userId}`,{
                 headers: {
                     Authorization: `Bearer ${token}`
                 }})

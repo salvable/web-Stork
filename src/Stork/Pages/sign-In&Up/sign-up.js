@@ -46,7 +46,7 @@ export default function SignUp() {
 
     const addUser = async() =>{
         try {
-            const response = await axios.post("http://localhost:3000/adduser", {
+            const response = await axios.post("http://localhost:3000/user", {
                 userId: id,
                 password: password,
                 email: email,
