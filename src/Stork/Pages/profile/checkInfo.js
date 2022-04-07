@@ -34,7 +34,7 @@ const CheckInfo = ({match}) => {
     const checkUser = async() => {
         try{
             const token = localStorage.getItem("accessToken")
-            const response = await axios.get(`http://localhost:3000/checkUser/${userId}?password=${password}`,{
+            const response = await axios.get(`http://localhost:3000/verification/${userId}?password=${password}`,{
                 headers: {
                     Authorization: `Bearer ${token}`
                 }})

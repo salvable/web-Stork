@@ -63,7 +63,7 @@ const ModifyInfo = ({match}) => {
 
     const modifyUserInfo  = async() => {
         try{
-            const response = await axios.put(`http://localhost:3000/updateUser/${userId}`,{
+            const response = await axios.put(`http://localhost:3000/user/${userId}`,{
                 password: password,
                 email: email,
                 name: name,

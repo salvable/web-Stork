@@ -36,7 +36,7 @@ const FavoriteTable = ({favorites, userId, token}) => {
     const [favoriteList,setFavoriteList] = useState([])
 
     const getFavoriteList = async(search) =>{
-        const response = await axios.get(`http://localhost:3000/favorites/getFavoriteList/${userId}?search=${search}`,{
+        const response = await axios.get(`http://localhost:3000/favorites/favoriteList/${userId}?search=${search}`,{
             headers: {
                 Authorization: `Bearer ${token}`
             }})
