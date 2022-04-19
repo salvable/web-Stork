@@ -45,8 +45,15 @@ const BitCoinTable = () => {
     },[]);
 
     const getCoinList = async (search) =>{
+        if(!search){
+            const response = await axios.get("http://localhost:8000/api_bit/bitCoin/getBitcoinList")
+            setCoinList(response.data.bitcoin)
+            return;
+        }
+
         const response = await axios.get(`http://localhost:8000/api_bit/bitCoin/getBitcoinList/${search}`)
         setCoinList(response.data.bitcoin)
+        return;
     }
 
     return (
