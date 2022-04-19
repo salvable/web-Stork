@@ -77,7 +77,7 @@ const Navbar = () => {
         <>
            <Nav>
                <NavLink to="/">
-                   <h1>Logo</h1>
+                   <h1>Bitork</h1>
                </NavLink>
                <NavMenu>
                    <NavLink to="/stork" activeStyle>

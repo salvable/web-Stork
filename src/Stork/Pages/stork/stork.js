@@ -118,6 +118,10 @@ const Stork = ({match}) => {
     }
 
     const setFavorite = async() =>{
+        if(!userId){
+            alert("로그인 후 이용해주세요")
+            return ;
+        }
         if(isExistFavorite == true){
             const response = await axios.delete(`http://localhost:3000/favorite/${userId}?favoriteId=${storkId}`,{
                 headers: {

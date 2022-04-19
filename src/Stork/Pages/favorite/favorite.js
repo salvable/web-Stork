@@ -73,6 +73,13 @@ const Favorite = ({match}) => {
     }
 
     useEffect(() => {
+        function isLogin(){
+            if(!userId){
+                alert("로그인 후 즐겨찾기 기능을 이용해 주세요.")
+                history.goBack()
+            }
+        }
+
         async function getFavorites() {
             const response = await axios.get(`http://localhost:3000/favorites/${userId}`,{
                 headers: {
@@ -100,6 +107,7 @@ const Favorite = ({match}) => {
             }
         }
         getFavorites()
+        isLogin()
     }, []);
     //
 

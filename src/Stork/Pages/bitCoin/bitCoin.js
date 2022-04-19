@@ -128,6 +128,11 @@ const Bitcoin = ({match}) => {
     }
 
     const setFavorite = async() =>{
+        if(!userId){
+            alert("로그인 후 이용해주세요")
+            return ;
+        }
+
         if(isExistFavorite == true){
             const response = await axios.delete(`http://localhost:3000/favorite/${userId}?favoriteId=${bitCoinId}`,{
                 headers: {
@@ -149,6 +154,7 @@ const Bitcoin = ({match}) => {
             }})
         setIsExistFavorite(true)
         alert("즐겨찾기에 추가되었습니다.")
+        return ;
     }
 
     if(!loading){
